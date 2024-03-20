@@ -1,0 +1,28 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model Label {
+  id      String   @id @default(uuid())
+  name    String
+  color   String
+  notes   Note[]   @relation("NoteToLabel")
+}
+
+model Note {
+  id        String   @id @default(uuid())
+  title     String 
+  content   String
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  labelId   String?  @map("label_id")
+  label     Label?   @relation("NoteToLabel", fields: [labelId], references: [id])
+}
