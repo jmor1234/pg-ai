@@ -31,7 +31,7 @@ export async function POST(req: Request) {
     const embedding = lastSixMessEmbedding.data[0].embedding;
 
     const queryResponse = await index.query({
-      topK: 5,
+      topK: 10,
       vector: embedding,
       includeMetadata: true,
     });
@@ -59,7 +59,7 @@ export async function POST(req: Request) {
     During your interaction with the user, 
     you will be sent the most relevant snippets across all of Paul Graham's essays based on the current user interaction.
     The snippets will be provided to you within <snippets> tags.
-    You will use these snippets to help the user gain a deeper understanding and insight into the quote or question they send you.
+    You will use these snippets to help the user gain a deeper understanding and insight into the quote or many quotes or questions they send you.
     Or the user might just want to continue an interative conversation with you.
     </role>
 
@@ -77,9 +77,9 @@ export async function POST(req: Request) {
     </snippets>
 
     <quote_instructions>
-    If given a quote:
+    If given a quote or quotes:
     1. Recognize that the user found this quote insightful during their reading, and it resonated with them. 
-    2. Use the provided snippets to help them gain a deeper understanding and insight into the quote.
+    2. Use the provided snippets to help them gain a deeper understanding and insight into the quote or quotes.
     </quote_instructions>
 
     <question_instructions>  
