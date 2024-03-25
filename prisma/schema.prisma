@@ -12,7 +12,6 @@ datasource db {
 model Label {
   id      String   @id @default(uuid())
   name    String
-  color   String
   notes   Note[]   @relation("NoteToLabel")
 }
 

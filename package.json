@@ -9,10 +9,12 @@
     "lint": "next lint",
     "scrape": "tsx scripts/scrape.ts",
     "embed": "tsx scripts/embed.ts",
-    "vectortotal": "tsx scripts/vectortotal.ts"
+    "vectortotal": "tsx scripts/vectortotal.ts",
+    "labels": "tsx scripts/labels.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.17.1",
+    "@clerk/nextjs": "^4.29.9",
     "@hookform/resolvers": "^3.3.4",
     "@next/env": "^14.1.3",
     "@pinecone-database/pinecone": "^2.1.0",
@@ -20,6 +22,7 @@
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-slot": "^1.0.2",
     "@vercel/postgres": "^0.7.2",
     "ai": "^3.0.8",
