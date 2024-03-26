@@ -20,9 +20,8 @@ export default function NotesChatBox() {
     isLoading,
     error,
   } = useChat({
-    api: `/api/`
-  }
-  );
+    api: `/api/chat/notes`
+  });
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -105,7 +104,7 @@ function ChatMessage({
       {isAiMessage && <Bot className="mr-2 shrink-0" size={20} />}
       <p
         className={cn(
-          "whitespace-pre-line rounded-xl border px-3 py-2 text-sm shadow-md",
+          "whitespace-pre-line max-w-prose rounded-xl border px-3 py-2 text-sm shadow-md",
           isAiMessage ? "bg-gray-100" : "bg-primary text-primary-foreground",
         )}
       >

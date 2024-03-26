@@ -20,7 +20,7 @@ export default function AIChatBox() {
     isLoading,
     error,
   } = useChat({
-    api: `/api/`
+    api: `/api/chat/pg`
   });
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -41,7 +41,7 @@ export default function AIChatBox() {
 
   return (
     <div className="mx-auto flex max-w-4xl flex-col mt-16 py-10 border px-4 rounded-xl shadow-xl">
-      <h1 className="text-2xl font-bold text-center text-muted-foreground">Ask Paul Graham</h1>
+      <h1 className="text-2xl font-bold text-center text-muted-foreground py-2">Ask Paul Graham</h1>
       <div className="mx-auto max-w-3xl" ref={scrollRef}>
         {messages.map((message) => (
           <ChatMessage message={message} key={message.id} />
@@ -104,7 +104,7 @@ function ChatMessage({
       {isAiMessage && <Bot className="mr-2 shrink-0" size={20} />}
       <p
         className={cn(
-          "whitespace-pre-line rounded-xl border px-3 py-2 text-sm shadow-md",
+          "whitespace-pre-line max-w-prose rounded-xl border px-3 py-2 text-sm shadow-md",
           isAiMessage ? "bg-gray-100" : "bg-primary text-primary-foreground",
         )}
       >
