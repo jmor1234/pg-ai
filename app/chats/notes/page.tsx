@@ -10,7 +10,7 @@ import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 
-export default function AIChatBox() {
+export default function NotesChatBox() {
   const {
     messages,
     input,
@@ -21,7 +21,8 @@ export default function AIChatBox() {
     error,
   } = useChat({
     api: `/api/`
-  });
+  }
+  );
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -41,7 +42,7 @@ export default function AIChatBox() {
 
   return (
     <div className="mx-auto flex max-w-4xl flex-col mt-16 py-10 border px-4 rounded-xl shadow-xl">
-      <h1 className="text-2xl font-bold text-center text-muted-foreground">Ask Paul Graham</h1>
+      <h1 className="text-2xl font-bold text-center text-muted-foreground">Chat With Your Notes</h1>
       <div className="mx-auto max-w-3xl" ref={scrollRef}>
         {messages.map((message) => (
           <ChatMessage message={message} key={message.id} />
@@ -75,7 +76,7 @@ export default function AIChatBox() {
           <Trash />
         </Button>
         <Input
-          placeholder="Send Message To PG"
+          placeholder="Interact with your notes..."
           value={input}
           onChange={handleInputChange}
         />
