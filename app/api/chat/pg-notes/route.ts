@@ -36,7 +36,7 @@ export async function POST(req: Request) {
     const { userId } = auth();
     const [pgQueryResponse, notesQueryResponse] = await Promise.all([
       pgIndex.query({
-        topK: 10,
+        topK: 7,
         vector: embedding,
         includeMetadata: true,
       }),
@@ -109,11 +109,16 @@ ${relevantNotes
 
 5. If the user asks a question, answer it to the best of your ability using the combined knowledge from the essays and notes.
 
-6. If the user provides a quote, delve deeper into its meaning and significance by examining it through the lens of the essays and the user's personal context from their notes.
+6. While crafting your response, analyze the user's notes for areas where more clarity or insight could enhance the contextual relevance of your answer. If you identify such areas, provide feedback to the user:
+   a. Highlight the specific note and the aspect that would benefit from more detail or elaboration.
+   b. Explain how additional information on this topic would allow you to provide a more comprehensive and contextually relevant response to the user's question or input.
+   c. Suggest that the user update the existing note or create a new note to capture the missing details, emphasizing the value this would bring to future conversations.
 
-7. If the snippets are not directly relevant to the user's input, acknowledge this and continue the conversation based on your general knowledge and understanding.
+7. If the user provides a quote, delve deeper into its meaning and significance by examining it through the lens of the essays and the user's personal context from their notes.
 
-8. After your response, include a list of the essay titles and note titles you referenced, if any, formatted as:
+8. If the snippets are not directly relevant to the user's input, acknowledge this and continue the conversation based on your general knowledge and understanding.
+
+9. After your response, include a list of the essay titles and note titles you referenced, if any, formatted as:
 
 <referencedEssays>
 - Title 1 (URL)
@@ -124,28 +129,14 @@ ${relevantNotes
 - Title A
 - Title B
 </referencedNotes>
+
+10. If you provided feedback on the user's notes, include a summary of your suggestions:
+
+<noteFeedback>
+- Suggested clarification or additional detail for [Note Title]: [Feedback]
+- Recommended creating a new note on [Topic]: [Reason]
+</noteFeedback>
 </instructions>
-
-<responseExample>
-The snippets from Paul Graham's essays and your notes provide some interesting perspectives on the topic of [user's input topic]. 
-
-In his essay "[Relevant Essay Title]," Graham argues that [key insight], stating "[relevant quote]" ([essay URL]). This aligns with the point you made in your "[Relevant Note Title]" note about [connection to user's idea].
-
-Additionally, your notes on "[Another Relevant Note Title]" highlight [another key insight], which Graham touches upon in "[Another Relevant Essay Title]," where he observes, "[another relevant quote]" ([essay URL]).
-
-Considering these insights together, it seems that [synthesized perspective on user's input topic]. Of course, as Graham acknowledges in "[Tangentially Relevant Essay Title]," "[qualifying quote]" ([essay URL]), so it's important to [concluding advice or perspective].
-
-<referencedEssays>
-- Relevant Essay Title (URL)
-- Another Relevant Essay Title (URL) 
-- Tangentially Relevant Essay Title (URL)
-</referencedEssays>
-
-<referencedNotes>
-- Relevant Note Title
-- Another Relevant Note Title
-</referencedNotes>
-</responseExample>
     `;
 
     console.log(`System Message: ${systemMessage}`);
