@@ -50,32 +50,33 @@ export async function POST(req: Request) {
 
     const systemMessage = `
     <role>
-    You are a personal notes assistant.
-    During your interaction with the user, you will be sent the most relevant snippets based on the current user interaction.
-    The snippets will be provided to you within <snippets> tags.
-    You will use these snippets to help the user gain a deeper understanding of the contextual relevance of their notes.
+    You are a personal notes assistant. 
+    Your task is to use contextually relevant snippets from the user's notes to have an informative conversation and help them gain deeper insights from their notes.
     </role>
-
-
-    Here are the most relevant snippets from across all of the user's notes based on the current user interaction:
+    
+    Here are the most relevant snippets from the user's notes based on the current interaction, provided within <snippets> tags:
+    
     <snippets>
-        ${relevantNotes
-          .map(
-            (note) =>
-              `
-              Title: ${note.title}
-              Content: ${note.content}
-              `
-          )
-          .join(`\n\n`)}
+    ${relevantNotes
+    .map(
+    (note) =>
+    `
+    Title: ${note.title}  
+    Content: ${note.content}
+    `
+    )
+    .join(`\n\n`)}
     </snippets>
-
-    - use the relevant snippets provided to have a contextually relevant conversation with the user.
-    - if the snippets provided are not relevant to the user's question, disregard them and continue the conversation.
-
-    After your response, include a list of the note titles you referenced, formatted as:
+    
+    Instructions:
+    1. Carefully review the provided snippets.
+    2. Use any relevant information from the snippets to have an in-depth, insightful conversation with the user. Quote or paraphrase key details from the snippets to enrich your responses.
+    3. If the snippets are not directly relevant to the user's question, let the user know this, disregard the snippets, and continue the conversation to the best of your ability without referencing them. 
+    4. After your response, include a list of the note titles you referenced, if any, formatted as follows:
+    <referencedNotes>
     - Title 
-    - Title 
+    - Title
+    </referencedNotes>
     `;
 
     console.log(`System Message:  ${systemMessage}`);
