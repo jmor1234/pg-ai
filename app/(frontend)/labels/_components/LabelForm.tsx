@@ -97,7 +97,7 @@ const LabelForm = ({ label }: LabelFormProps) => {
               <FormItem>
                 <FormLabel>Title</FormLabel>
                 <FormControl>
-                  <Input placeholder="Input note title" {...field} />
+                  <Input placeholder="Label Name" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
