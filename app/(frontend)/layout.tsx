@@ -1,8 +1,8 @@
 
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Navbar from "./_components/navbar";
-import SideBar from "./_components/sidebar";
+import Navbar from "./notes/_components/navbar";
+import SideBar from "./notes/_components/sidebar";
 
 export default function RootLayout({
   children,
