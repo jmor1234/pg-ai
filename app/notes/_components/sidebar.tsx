@@ -1,7 +1,7 @@
 "use client"
 
 import { cn } from '@/lib/utils'
-import { Home, Plus, Settings } from 'lucide-react'
+import { Home, Plus, Settings, StickyNoteIcon, TagIcon } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import React from 'react'
@@ -19,7 +19,12 @@ const SideBar = () => {
     {
       icon: Plus,
       href: '/notes/new',
-      label: 'Create'
+      label: 'Create Note'
+    },
+    {
+      icon: TagIcon,
+      href: '/labels',
+      label: 'Manage Labels'
     },
     {
       icon: Settings,
@@ -48,7 +53,7 @@ const SideBar = () => {
                 pathname === route.href && "text-primary bg-primary/10"
               )}
             >
-              <div className='flex flex-col gap-y-2 items-center flex-1'>
+              <div className='flex flex-col gap-y-2 items-center flex-1 text-center'>
                 <route.icon className='h-5 w-5' />
                 {route.label}
               </div>
