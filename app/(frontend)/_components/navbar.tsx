@@ -2,6 +2,8 @@ import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import React from "react";
 import MobileSidebar from "./mobile-sidebar";
+import { DarkMode } from "@/components/ui/DarkMode";
+import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
   return (
@@ -11,13 +13,14 @@ const Navbar = () => {
     >
       <div className="flex items-center ">
         <MobileSidebar />
-        <Link href="">
-          <h1 className="hidden md:block text-xl md:text-3xl font-bold text-primary">
-            companion.ai
+        <Link href="/">
+          <h1 className="hidden md:block text-lg md:text-xl font-bold text-primary p-2">
+            CC
           </h1>
         </Link>
       </div>
       <div className="flex items-center gap-x-3">
+        <DarkMode />
         <UserButton />
       </div>
     </div>

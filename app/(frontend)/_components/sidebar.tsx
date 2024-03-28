@@ -1,7 +1,7 @@
 "use client"
 
 import { cn } from '@/lib/utils'
-import { Home, Plus, Settings, StickyNoteIcon, TagIcon } from 'lucide-react'
+import { BotIcon, Home, NotebookIcon, Plus, Settings, StickyNoteIcon, TagIcon } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import React from 'react'
@@ -12,9 +12,14 @@ const SideBar = () => {
 
   const routes = [
     {
-      icon: Home,
-      href: '/',
-      label: 'Home'
+      icon: BotIcon,
+      href: '/chats',
+      label: 'Chats'
+    },
+    {
+      icon: NotebookIcon,
+      href: '/notes',
+      label: 'Notes'
     },
     {
       icon: Plus,
