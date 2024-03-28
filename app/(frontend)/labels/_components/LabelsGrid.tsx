@@ -1,31 +1,21 @@
 "use client";
 
 import React from "react";
-import NoteCard from "./NoteCard";
 import { Label, Note } from "@prisma/client";
+import LabelCard from "./LabelCard";
 
-interface NoteGridProps {
-    notes: Note[] ;
+interface LabelsGridProps {
     labels: Label[];
 }
 
-const NotesGrid = ({ notes, labels }: NoteGridProps) => {
+const LabelsGrid = ({ labels }: LabelsGridProps) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4">
-      {notes.map((note, index) => (
-        <NoteCard
-          label={
-            labels.find((label) => label.id === note.labelId) || {
-              id: "default",
-              name: "No Label",
-            }
-          }
-          key={index}
-          note={note}
-        />
+      {labels.map((label, index) => (
+        <LabelCard key={index} label={label} />
       ))}
     </div>
   );
 };
 
-export default NotesGrid;
+export default LabelsGrid;

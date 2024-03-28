@@ -4,6 +4,10 @@ import React from "react";
 import MobileSidebar from "./mobile-sidebar";
 import { DarkMode } from "@/components/ui/DarkMode";
 import { Button } from "@/components/ui/button";
+import { NotebookIcon } from "lucide-react";
+import { ChatBubbleIcon } from "@radix-ui/react-icons";
+import logo from "@/app/favicon.ico"
+import Image from "next/image";
 
 const Navbar = () => {
   return (
@@ -13,12 +17,19 @@ const Navbar = () => {
     >
       <div className="flex items-center ">
         <MobileSidebar />
-        <Link href="/">
-          <h1 className="hidden md:block text-lg md:text-xl font-bold text-primary p-2">
-            CC
-          </h1>
+        <Link href="/" className="hidden md:block">
+          <Image src={logo} alt="logo" width={40} height={40} />
         </Link>
       </div>
+        <Link href="/notes" className="flex flex-col items-center">
+          <NotebookIcon className="h-5 w-5 inline-block mb-1" />
+          <span className="hidden md:block">Notes</span>
+        </Link>
+        <h1 className="text-xl md:text-2xl font-semibold tracking-tighter text-primary">CoreContext</h1>
+        <Link href="/chats" className="flex flex-col items-center">
+          <ChatBubbleIcon className="h-5 w-5 inline-block mb-1" />
+          <span className="hidden md:block">Chats</span>
+        </Link>
       <div className="flex items-center gap-x-3">
         <DarkMode />
         <UserButton />

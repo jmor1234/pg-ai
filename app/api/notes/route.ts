@@ -163,5 +163,8 @@ export async function DELETE(req: Request) {
     });
     console.log("Note deleted and removed from index successfully");
     return Response.json({ deleteNote }, { status: 200 });
-  } catch (error) {}
+  } catch (error) {
+    console.error("An error occurred on DELETE", error);
+    return Response.json({ error: "Internal Server Error" }, { status: 500 });
+  }
 }

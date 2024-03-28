@@ -1,7 +1,7 @@
 "use client"
 
 import { cn } from '@/lib/utils'
-import { BotIcon, Home, NotebookIcon, Plus, Settings, StickyNoteIcon, TagIcon } from 'lucide-react'
+import { BotIcon, Home, NotebookIcon, Plus, PlusIcon, Settings, StickyNoteIcon, TagIcon } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import React from 'react'
@@ -12,19 +12,14 @@ const SideBar = () => {
 
   const routes = [
     {
-      icon: BotIcon,
-      href: '/chats',
-      label: 'Chats'
-    },
-    {
       icon: NotebookIcon,
-      href: '/notes',
-      label: 'Notes'
+      href: '/notes/new',
+      label: '+ New'
     },
     {
-      icon: Plus,
-      href: '/notes/new',
-      label: 'Create Note'
+      icon: TagIcon,
+      href: '/labels/new',
+      label: '+ New'
     },
     {
       icon: TagIcon,
@@ -60,7 +55,7 @@ const SideBar = () => {
             >
               <div className='flex flex-col gap-y-2 items-center flex-1 text-center'>
                 <route.icon className='h-5 w-5' />
-                {route.label}
+                <p className='text-xs'>{route.label}</p>
               </div>
             </div>
           ))}
