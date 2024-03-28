@@ -16,6 +16,10 @@ const DeleteNote = ({ note }: DeleteNoteProps) => {
 
   async function onDelete() {
     if (!note) return;
+    // Add confirmation dialog
+    const isConfirmed = window.confirm("Are you sure you want to delete this note?");
+    if (!isConfirmed) return; // Stop the deletion process if user cancels
+
     setIsLoading(true); // Set loading to true at the start of deletion
     try {
       const response = await fetch("/api/notes", {

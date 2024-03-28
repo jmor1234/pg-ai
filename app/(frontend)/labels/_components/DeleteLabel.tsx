@@ -16,11 +16,16 @@ const DeleteLabel = ({ label }: DeleteLabelProps) => {
 
   async function onDelete() {
     if (!label) return;
+    const isConfirmed = window.confirm(
+      "Are you sure you want to delete this label?"
+    );
+    if (!isConfirmed) return; // Stop the deletion process if user cancels
     setIsLoading(true); // Set loading to true at the start of deletion
     try {
       const response = await fetch("/api/labels", {
         method: "DELETE",
-        headers: { // It's a good practice to include headers
+        headers: {
+          // It's a good practice to include headers
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
@@ -41,7 +46,13 @@ const DeleteLabel = ({ label }: DeleteLabelProps) => {
 
   return (
     <div className="flex w-full">
-      <Button onClick={onDelete} variant="destructive" size="sm" className="w-full" disabled={isLoading}>
+      <Button
+        onClick={onDelete}
+        variant="destructive"
+        size="sm"
+        className="w-full"
+        disabled={isLoading}
+      >
         {isLoading ? <span>Loading...</span> : <Trash2 className="w-4 h-4" />}
       </Button>
     </div>
