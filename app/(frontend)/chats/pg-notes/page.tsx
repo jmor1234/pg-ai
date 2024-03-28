@@ -79,7 +79,7 @@ export default function AIChatBox() {
           value={input}
           onChange={handleInputChange}
         />
-        <Button className="bg-black" type="submit">
+        <Button className="" type="submit">
           Send
         </Button>
       </form>
@@ -105,7 +105,7 @@ function ChatMessage({
       <p
         className={cn(
           "whitespace-pre-line max-w-prose rounded-xl border px-3 py-2 text-sm shadow-md",
-          isAiMessage ? "bg-gray-100" : "bg-primary text-primary-foreground",
+          isAiMessage ? "bg-primary/10" : "bg-primary text-primary-foreground",
         )}
       >
         {content}
