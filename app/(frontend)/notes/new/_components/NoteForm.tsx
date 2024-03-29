@@ -27,6 +27,7 @@ import { Button } from "@/components/ui/button";
 
 import React, { useState } from "react";
 import { Label, Note } from "@prisma/client";
+import TipTapEditor from "../../_components/TipTapEditor";
 
 interface NoteDialogProps {
   Labels: Label[];
@@ -47,7 +48,6 @@ const NoteForm = ({ Labels, note }: NoteDialogProps) => {
   });
 
   const isLoading = form.formState.isSubmitting;
-  
 
   const onSubmit = async (data: CreateNoteType) => {
     try {
@@ -114,7 +114,7 @@ const NoteForm = ({ Labels, note }: NoteDialogProps) => {
               <FormItem>
                 <FormLabel>Content</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Input note content" {...field} />
+                  <TipTapEditor note={note} onChange={field.onChange} value={field.value} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -142,7 +142,11 @@ const NoteForm = ({ Labels, note }: NoteDialogProps) => {
                   </FormControl>
                   <SelectContent>
                     {Labels.map((label) => (
-                      <SelectItem value={label.id} key={label.id} className="cursor-pointer">
+                      <SelectItem
+                        value={label.id}
+                        key={label.id}
+                        className="cursor-pointer"
+                      >
                         {label.name}
                       </SelectItem>
                     ))}
