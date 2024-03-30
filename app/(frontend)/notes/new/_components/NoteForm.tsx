@@ -114,7 +114,11 @@ const NoteForm = ({ Labels, note }: NoteDialogProps) => {
               <FormItem>
                 <FormLabel>Content</FormLabel>
                 <FormControl>
-                  <TipTapEditor note={note} onChange={field.onChange} value={field.value} />
+                  <Textarea
+                    className="sm:min-h-[200px] max-w-prose whitespace-pre-line"
+                    placeholder="Input note content"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
