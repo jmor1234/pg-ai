@@ -9,6 +9,8 @@ import { Message } from "ai";
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
+// Import the AudioRecorder component
+import AudioRecorder from "@/components/whisperaudio";
 
 export default function NotesChatBox() {
   const {
@@ -38,6 +40,14 @@ export default function NotesChatBox() {
       }
     }
   }, [messages]);
+
+  const handleTranscriptionComplete = (transcription: string) => {
+    const updatedInput = `${input} ${transcription}`.trim();
+    const syntheticEvent = {
+      target: { value: updatedInput },
+    } as unknown as React.ChangeEvent<HTMLInputElement>; // Adjust the casting here
+    handleInputChange(syntheticEvent);
+  };
 
   return (
     <div className="mx-auto flex max-w-4xl flex-col mt-16 py-10 border px-4 rounded-xl shadow-xl">
@@ -83,6 +93,7 @@ export default function NotesChatBox() {
           Send
         </Button>
       </form>
+      <AudioRecorder onTranscriptionComplete={handleTranscriptionComplete} />
     </div>
   );
 }
