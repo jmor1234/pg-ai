@@ -1,7 +1,7 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useForm, FieldValues } from "react-hook-form";
+import { useForm, FieldValues, Controller} from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -25,9 +25,9 @@ import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Label, Note } from "@prisma/client";
-import TipTapEditor from "../../_components/TipTapEditor";
+import { Mic2Icon } from "lucide-react";
 
 interface NoteDialogProps {
   Labels: Label[];
@@ -37,6 +37,74 @@ interface NoteDialogProps {
 const NoteForm = ({ Labels, note }: NoteDialogProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const [isRecording, setIsRecording] = useState(false);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const chunksRef = useRef<Blob[]>([]);
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+      mediaRecorderRef.current = mediaRecorder;
+      chunksRef.current = [];
+
+      mediaRecorder.addEventListener("dataavailable", (event) => {
+        console.log("Data available:", event.data.size); // Log the size of the data chunk
+        chunksRef.current.push(event.data);
+      });
+
+      mediaRecorder.start();
+      setIsRecording(true);
+    } catch (error) {
+      console.error("Error starting audio recording:", error);
+    }
+  };
+
+  const stopRecording = async () => {
+    if (mediaRecorderRef.current) {
+      console.log("MediaRecorder state before stopping:", mediaRecorderRef.current.state);
+      mediaRecorderRef.current.addEventListener('stop', handleAudioUpload, { once: true });
+      setTimeout(() => {
+        mediaRecorderRef.current?.stop();
+        setIsRecording(false);
+        console.log("Stopping recording and uploading audio"); // Added for debugging
+      }, 1000); // Adjust the delay as needed
+    }
+  };
+
+  const handleAudioUpload = async () => {
+    console.log("Uploading audio file for transcription"); // Existing log
+    if (chunksRef.current.length === 0) {
+      console.log("No audio data to upload"); // Added for debugging
+      return;
+    }
+
+    const blob = new Blob(chunksRef.current, { type: "audio/webm" });
+    const file = new File([blob], "audio.webm", {
+      type: "audio/webm",
+      lastModified: Date.now(),
+    });
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await fetch("/api/notes/transcribe", { // Ensure this endpoint matches your server routing
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log("Transcription received:", result.text); // Existing log
+      form.setValue("content", result.text); // Set the form field value
+    } catch (error) {
+      console.error("Error in audio transcription:", error); // Existing log
+    }
+  };
 
   const form = useForm<CreateNoteType>({
     resolver: zodResolver(createNoteSchema),
@@ -124,6 +192,15 @@ const NoteForm = ({ Labels, note }: NoteDialogProps) => {
               </FormItem>
             )}
           />
+          <Button
+            disabled={isLoading}
+            className="w-full bg-secondary text-primary hover:bg-primary hover:text-secondary"
+            type="button"
+            onClick={isRecording ? stopRecording : startRecording}
+          >
+            <Mic2Icon className="w-5 h-5 mr-2" />
+            {isRecording ? "Stop Recording" : "Start Recording"}
+          </Button>
           <FormField
             control={form.control}
             name="labelId"
