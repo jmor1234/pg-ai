@@ -11,6 +11,7 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 // Import the AudioRecorder component
 import AudioRecorder from "@/components/whisperaudio";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function NotesChatBox() {
   const {
@@ -84,7 +85,7 @@ export default function NotesChatBox() {
         >
           <Trash />
         </Button>
-        <Input
+        <Textarea
           placeholder="Interact with your notes..."
           value={input}
           onChange={handleInputChange}
