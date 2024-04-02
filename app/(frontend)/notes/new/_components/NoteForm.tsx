@@ -100,7 +100,22 @@ const NoteForm = ({ Labels, note }: NoteDialogProps) => {
 
       const result = await response.json();
       console.log("Transcription received:", result.text); // Existing log
-      form.setValue("content", result.text); // Set the form field value
+
+      // Get current content and cursor position
+      const currentContent = form.getValues("content");
+      const textarea = document.querySelector('textarea[name="content"]') as HTMLTextAreaElement | null;
+      const cursorPosition = textarea ? textarea.selectionStart : 0;
+
+      // Insert the transcribed text at the cursor position
+      const updatedContent = [
+        currentContent.slice(0, cursorPosition),
+        result.text,
+        currentContent.slice(cursorPosition),
+      ].join('');
+
+      // Set the form field value with the updated content
+      form.setValue("content", updatedContent);
+
     } catch (error) {
       console.error("Error in audio transcription:", error); // Existing log
     }
