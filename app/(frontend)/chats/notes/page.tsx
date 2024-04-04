@@ -23,7 +23,7 @@ export default function NotesChatBox() {
     isLoading,
     error,
   } = useChat({
-    api: `/api/chat/notes`
+    api: `/api/chat/notes`,
   });
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -52,7 +52,9 @@ export default function NotesChatBox() {
 
   return (
     <div className="mx-auto flex max-w-4xl flex-col mt-16 py-10 border px-4 rounded-xl shadow-xl">
-      <h1 className="text-2xl font-bold text-center text-muted-foreground">Chat With Your Notes</h1>
+      <h1 className="text-2xl font-bold text-center text-muted-foreground">
+        Chat With Your Notes
+      </h1>
       <div className="mx-auto max-w-3xl" ref={scrollRef}>
         {messages.map((message) => (
           <ChatMessage message={message} key={message.id} />
@@ -74,7 +76,10 @@ export default function NotesChatBox() {
           />
         )}
       </div>
-      <form onSubmit={handleSubmit} className="mt-4 flex gap-2">
+      <form
+        onSubmit={handleSubmit}
+        className="mt-4 flex items-center justify-center gap-2"
+      >
         <Button
           title="Clear Chat"
           variant="outline"
@@ -85,11 +90,24 @@ export default function NotesChatBox() {
         >
           <Trash />
         </Button>
-        <Textarea
+        <textarea
+          className="max-w-prose whitespace-pre-wrap rounded-xl border px-3 py-2 text-sm shadow-md flex-grow"
           placeholder="Interact with your notes..."
           value={input}
           onChange={handleInputChange}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" && !event.shiftKey) {
+              event.preventDefault(); // Prevents the default action of the Enter key
+              // Create a synthetic event object
+              const syntheticEvent = {
+                preventDefault: () => {}, // Mock preventDefault method
+                stopPropagation: () => {}, // Mock stopPropagation method
+              } as React.FormEvent<HTMLFormElement>;
+              handleSubmit(syntheticEvent); // Pass the synthetic event to handleSubmit
+            }
+          }}
         />
+
         <Button className="" type="submit">
           Send
         </Button>
@@ -100,7 +118,7 @@ export default function NotesChatBox() {
 }
 
 function ChatMessage({
-  message: { role, content }
+  message: { role, content },
 }: {
   message: Pick<Message, "role" | "content">;
 }) {
@@ -110,14 +128,14 @@ function ChatMessage({
     <div
       className={cn(
         "mb-3 flex items-center",
-        isAiMessage ? "me-5 justify-start" : "ms-5 justify-end",
+        isAiMessage ? "me-5 justify-start" : "ms-5 justify-end"
       )}
-    > 
+    >
       {isAiMessage && <Bot className="mr-2 shrink-0" size={20} />}
       <p
         className={cn(
           "whitespace-pre-line max-w-prose rounded-xl border px-3 py-2 text-sm shadow-md",
-          isAiMessage ? "bg-primary/10" : "bg-primary text-primary-foreground",
+          isAiMessage ? "bg-primary/10" : "bg-primary text-primary-foreground"
         )}
       >
         {content}
