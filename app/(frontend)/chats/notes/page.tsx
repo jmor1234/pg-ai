@@ -46,7 +46,7 @@ export default function NotesChatBox() {
     const updatedInput = `${input} ${transcription}`.trim();
     const syntheticEvent = {
       target: { value: updatedInput },
-    } as unknown as React.ChangeEvent<HTMLInputElement>; // Adjust the casting here
+    } as unknown as React.ChangeEvent<HTMLTextAreaElement>; // Adjust the casting here
     handleInputChange(syntheticEvent);
   };
 
@@ -112,7 +112,9 @@ export default function NotesChatBox() {
           Send
         </Button>
       </form>
-      <AudioRecorder onTranscriptionComplete={handleTranscriptionComplete} />
+      <div className=" my-1 max-w-[150px] sm:max-w-[200px] w-full mx-auto">
+        <AudioRecorder onTranscriptionComplete={handleTranscriptionComplete} />
+      </div>
     </div>
   );
 }
