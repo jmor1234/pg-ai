@@ -39,16 +39,32 @@ const Chats = () => {
         <Button className="" variant="destructive" asChild>
           <Link href="/chats/pg-notes">Chat with Paul Graham + your notes</Link>
         </Button>
-        {/* <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center">
           <BotIcon className="h-6 w-6 inline-block mr-1 mb-1" />
           <span className="text-xl font-semibold tracking-tighter text-primary">
             Deep Writing
           </span>
           <NotebookIcon className="h-6 w-6 inline-block ml-2 mb-1" />
         </div>
-        <Button className="bg-secondary text-primary border border-primary" asChild>
+        <Button
+          className="bg-secondary text-primary border border-primary"
+          asChild
+        >
           <Link href="/chats/deep-writing">Deep Writing Companion</Link>
-        </Button> */}
+        </Button>
+        <div className="flex items-center justify-center">
+          <BotIcon className="h-6 w-6 inline-block mr-1 mb-1" />
+          <span className="text-xl font-semibold tracking-tighter text-primary">
+            Deep PG
+          </span>
+          <NotebookIcon className="h-6 w-6 inline-block ml-2 mb-1" />
+        </div>
+        <Button
+          className="bg-secondary text-primary border border-primary"
+          asChild
+        >
+          <Link href="/chats/deep-pg">Deep PG</Link>
+        </Button>
       </div>
     </div>
   );

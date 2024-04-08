@@ -9,6 +9,7 @@ import { Message } from "ai";
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
+import AudioRecorder from "@/components/whisperaudio";
 
 export default function AIChatBox() {
   const {
@@ -39,6 +40,14 @@ export default function AIChatBox() {
     }
   }, [messages]);
 
+  const handleTranscriptionComplete = (transcription: string) => {
+    const updatedInput = `${input} ${transcription}`.trim();
+    const syntheticEvent = {
+      target: { value: updatedInput },
+    } as unknown as React.ChangeEvent<HTMLTextAreaElement>; // Adjust the casting here
+    handleInputChange(syntheticEvent);
+  };
+
   return (
     <div className="mx-auto flex max-w-4xl flex-col mt-16 py-10 border px-4 rounded-xl shadow-xl">
       <h1 className="text-2xl font-bold text-center text-muted-foreground py-2">Ask PG and your own notes</h1>
@@ -63,7 +72,10 @@ export default function AIChatBox() {
           />
         )}
       </div>
-      <form onSubmit={handleSubmit} className="mt-4 flex gap-2">
+      <form
+        onSubmit={handleSubmit}
+        className="mt-4 flex items-center justify-center gap-2"
+      >
         <Button
           title="Clear Chat"
           variant="outline"
@@ -74,15 +86,31 @@ export default function AIChatBox() {
         >
           <Trash />
         </Button>
-        <Input
-          placeholder="Send Message to the AI Assistant with contextual relevance to your notes and PG Essays"
+        <textarea
+          className="max-w-prose whitespace-pre-wrap rounded-xl border px-3 py-2 text-sm shadow-md flex-grow"
+          placeholder="Interact with your notes..."
           value={input}
           onChange={handleInputChange}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" && !event.shiftKey) {
+              event.preventDefault(); // Prevents the default action of the Enter key
+              // Create a synthetic event object
+              const syntheticEvent = {
+                preventDefault: () => {}, // Mock preventDefault method
+                stopPropagation: () => {}, // Mock stopPropagation method
+              } as React.FormEvent<HTMLFormElement>;
+              handleSubmit(syntheticEvent); // Pass the synthetic event to handleSubmit
+            }
+          }}
         />
+
         <Button className="" type="submit">
           Send
         </Button>
       </form>
+      <div className=" my-1 max-w-[150px] sm:max-w-[200px] w-full mx-auto">
+        <AudioRecorder onTranscriptionComplete={handleTranscriptionComplete} />
+      </div>
     </div>
   );
 }
