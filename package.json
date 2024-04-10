@@ -13,7 +13,7 @@
     "labels": "tsx scripts/labels.ts"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.17.1",
+    "@anthropic-ai/sdk": "^0.17.2",
     "@clerk/nextjs": "^4.29.9",
     "@hookform/resolvers": "^3.3.4",
     "@next/env": "^14.1.3",
