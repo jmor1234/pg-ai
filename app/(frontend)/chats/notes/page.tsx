@@ -50,6 +50,27 @@ export default function NotesChatBox() {
     handleInputChange(syntheticEvent);
   };
 
+  const handleSaveChat = async () => {
+    const currentConversation = messages.map(msg => `${msg.role}: ${msg.content}`).join('\n\n');
+    const response = await fetch('/api/notes/chatHistory', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title: `Chat on ${new Date().toLocaleDateString()}`,
+        content: currentConversation,
+        label: "Chat History"
+      }),
+    });
+
+    if (response.ok) {
+      console.log('Chat saved to notes successfully.');
+    } else {
+      console.error('Failed to save chat to notes.');
+    }
+  };
+
   return (
     <div className="mx-auto flex max-w-4xl flex-col mt-16 py-10 border px-4 rounded-xl shadow-xl">
       <h1 className="text-2xl font-bold text-center text-muted-foreground">
@@ -107,7 +128,16 @@ export default function NotesChatBox() {
             }
           }}
         />
-
+        <Button
+          title="Save Chat to Notes"
+          variant="outline"
+          size="icon"
+          className="shrink-0"
+          type="button"
+          onClick={handleSaveChat}
+        >
+          Save Chat
+        </Button>
         <Button className="" type="submit">
           Send
         </Button>

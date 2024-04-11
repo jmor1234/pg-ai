@@ -30,6 +30,7 @@
     "@tiptap/pm": "^2.2.4",
     "@tiptap/react": "^2.2.4",
     "@tiptap/starter-kit": "^2.2.4",
+    "@vercel/kv": "^1.0.1",
     "@vercel/postgres": "^0.7.2",
     "ai": "^3.0.8",
     "class-variance-authority": "^0.7.0",

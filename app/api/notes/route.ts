@@ -25,14 +25,25 @@ export async function POST(req: Request) {
       console.error("Validation failed", validation.error);
       return Response.json({ error: "Invalid note" }, { status: 400 });
     }
-    const { title, content, labelId } = validation.data; // Use labelId here
+    const { title, content, labelId } = validation.data;
     const { userId } = auth();
     console.log(`Authenticated user ID: ${userId}`);
     if (!userId) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
-    const noteText = `${title}\n${content}`;
-    console.log("Creating text embedding");
+
+    // Fetch the label name using labelId
+    const label = await prisma.label.findUnique({
+      where: { id: labelId },
+    });
+    if (!label) {
+      console.error("Label not found");
+      return Response.json({ error: "Label not found" }, { status: 404 });
+    }
+
+    // Include the label name in the noteText
+    const noteText = `Title: ${title}\nLabel: ${label.name}\nContent: ${content}`;
+    console.log("Text to be embedded:", noteText);
     const createEmbedding = await openai.embeddings.create({
       model: "text-embedding-ada-002",
       input: noteText,
@@ -82,8 +93,19 @@ export async function PUT(req: Request) {
     if (!userId) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
-    const noteText = `${title}\n${content}`;
-    console.log("Creating text embedding for PUT");
+
+    // Fetch the label name using labelId
+    const label = await prisma.label.findUnique({
+      where: { id: labelId },
+    });
+    if (!label) {
+      console.error("Label not found on PUT");
+      return Response.json({ error: "Label not found" }, { status: 404 });
+    }
+
+    // Include the label name in the noteText
+    const noteText = `Title: ${title}\nLabel: ${label.name}\nContent: ${content}`;
+    console.log("Text to be embedded for PUT:", noteText);
     const createEmbedding = await openai.embeddings.create({
       model: "text-embedding-ada-002",
       input: noteText,

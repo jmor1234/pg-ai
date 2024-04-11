@@ -20,11 +20,16 @@ export async function POST(req: Request) {
       `Received ${messages.length} messages. Processing the last 6 messages...`
     );
     const lastSixMess = messages.slice(-6);
+    console.log("Last 6 messages: ",  lastSixMess
+      .map((message: { role: string; content: string }) => {
+        return message.role + ": " + message.content + "\n";
+      })
+      .join("\n"));
     const lastSixMessEmbedding = await openai.embeddings.create({
       model: "text-embedding-ada-002",
       input: lastSixMess
         .map((message: { role: string; content: string }) => {
-          return message.content;
+          return message.role + ": " + message.content + "\n";
         })
         .join("\n"),
     });
