@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Mic2Icon } from "lucide-react";
 
+
 interface AudioRecorderProps {
   onTranscriptionComplete: (transcription: string) => void;
 }
@@ -24,6 +25,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onTranscriptionComplete }
 
       mediaRecorder.start();
       setIsRecording(true);
+
     } catch (error) {
       console.error("Error starting audio recording:", error);
     }
@@ -71,14 +73,14 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ onTranscriptionComplete }
 
   return (
     <Button
-      className="w-full bg-secondary text-primary hover:bg-primary hover:text-secondary"
+      className="w-auto p-1 shrink-0 bg-secondary text-primary hover:bg-primary hover:text-secondary"
       type="button"
       variant="ghost"
-      size="icon"
+      size="sm"
       onClick={isRecording ? stopRecording : startRecording}
     >
-      <Mic2Icon className="w-5 h-5 mr-2" />
-      {isRecording ? "Stop" : "Audio"}
+      <Mic2Icon className="w-4 h-4 mr-1" />
+      {isRecording ? "Done" : "Audio"}
     </Button>
   );
 };

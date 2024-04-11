@@ -12,8 +12,11 @@ import { useEffect, useRef } from "react";
 // Import the AudioRecorder component
 import AudioRecorder from "@/components/whisperaudio";
 import { Textarea } from "@/components/ui/textarea";
+import { SaveChatType } from "@/lib/validation/chatHistory";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function NotesChatBox() {
+  const { toast } = useToast();
   const {
     messages,
     input,
@@ -46,34 +49,50 @@ export default function NotesChatBox() {
     const updatedInput = `${input} ${transcription}`.trim();
     const syntheticEvent = {
       target: { value: updatedInput },
-    } as unknown as React.ChangeEvent<HTMLTextAreaElement>; // Adjust the casting here
+    } as unknown as React.ChangeEvent<HTMLTextAreaElement>;
     handleInputChange(syntheticEvent);
   };
 
   const handleSaveChat = async () => {
-    const currentConversation = messages.map(msg => `${msg.role}: ${msg.content}`).join('\n\n');
-    const response = await fetch('/api/notes/chatHistory', {
-      method: 'POST',
+    const currentConversation = messages
+      .map((msg) => `${msg.role}: ${msg.content}`)
+      .join("\n\n");
+    const chatData: SaveChatType = {
+      title: `Chat on ${new Date().toLocaleString("en-US", {
+        year: "numeric", // Add year
+        month: "2-digit", // Add month
+        day: "2-digit", // Add day
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      })}`,
+      content: currentConversation,
+      label: "Chat History",
+    };
+
+    const response = await fetch("/api/notes/chatHistory", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        title: `Chat on ${new Date().toLocaleDateString()}`,
-        content: currentConversation,
-        label: "Chat History"
-      }),
+      body: JSON.stringify(chatData),
     });
 
     if (response.ok) {
-      console.log('Chat saved to notes successfully.');
+      console.log("Chat saved to notes successfully.");
+      toast({
+        title: "Chat Saved",
+        description:
+          "Your chat has been saved to your notes under the label Chat History.",
+      });
     } else {
-      console.error('Failed to save chat to notes.');
+      console.error("Failed to save chat to notes.");
     }
   };
 
   return (
     <div className="mx-auto flex max-w-4xl flex-col mt-16 py-10 border px-4 rounded-xl shadow-xl">
-      <h1 className="text-2xl font-bold text-center text-muted-foreground">
+      <h1 className="text-2xl font-bold text-center text-muted-foreground mb-2">
         Chat With Your Notes
       </h1>
       <div className="mx-auto max-w-3xl" ref={scrollRef}>
@@ -101,16 +120,6 @@ export default function NotesChatBox() {
         onSubmit={handleSubmit}
         className="mt-4 flex items-center justify-center gap-2"
       >
-        <Button
-          title="Clear Chat"
-          variant="outline"
-          size="icon"
-          className="shrink-0"
-          type="button"
-          onClick={() => setMessages([])}
-        >
-          <Trash />
-        </Button>
         <textarea
           className="max-w-prose whitespace-pre-wrap rounded-xl border px-3 py-2 text-sm shadow-md flex-grow"
           placeholder="Interact with your notes..."
@@ -128,22 +137,36 @@ export default function NotesChatBox() {
             }
           }}
         />
-        <Button
-          title="Save Chat to Notes"
-          variant="outline"
-          size="icon"
-          className="shrink-0"
-          type="button"
-          onClick={handleSaveChat}
-        >
-          Save Chat
-        </Button>
-        <Button className="" type="submit">
+        <Button className="" type="submit" size="sm">
           Send
         </Button>
       </form>
-      <div className=" my-1 max-w-[150px] sm:max-w-[200px] w-full mx-auto">
-        <AudioRecorder onTranscriptionComplete={handleTranscriptionComplete} />
+      <div className=" my-1 max-w-[150px] sm:max-w-[200px] w-full mx-auto mt-2">
+        <div className="flex items-center justify-center md:gap-3 sm:gap-2">
+          <AudioRecorder
+            onTranscriptionComplete={handleTranscriptionComplete}
+          />
+          <Button
+            title="Clear Chat"
+            type="button"
+            size="sm"
+            variant="destructive"
+            className="opacity-70 hover:opacity-100"
+            onClick={() => setMessages([])}
+          >
+            Clear Chat
+          </Button>
+          <Button
+            title="Save Chat to Notes"
+            variant="outline"
+            type="button"
+            size="sm"
+            className=""
+            onClick={handleSaveChat}
+          >
+            Save Chat
+          </Button>
+        </div>
       </div>
     </div>
   );
