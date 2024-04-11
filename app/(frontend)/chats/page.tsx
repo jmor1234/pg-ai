@@ -39,6 +39,7 @@ const Chats = () => {
         <Button className="" variant="destructive" asChild>
           <Link href="/chats/pg-notes">Chat with Paul Graham + your notes</Link>
         </Button>
+       { /*
         <div className="flex items-center justify-center">
           <BotIcon className="h-6 w-6 inline-block mr-1 mb-1" />
           <span className="text-xl font-semibold tracking-tighter text-primary">
@@ -65,6 +66,7 @@ const Chats = () => {
         >
           <Link href="/chats/deep-pg">Deep PG</Link>
         </Button>
+        */ }
       </div>
     </div>
   );
