@@ -11,7 +11,7 @@ const HomePage = () => {
         <div className="flex flex-col items-center">
           <UserButton />
         </div>
-        <h1 className="text-2xl font-bold text-center">CoreContext</h1>
+        <h1 className="text-2xl font-bold text-center">PG-AI</h1>
         <Button className="border border-gray-300" variant="outline" asChild>
           {userId ? <SignOutButton /> : <SignInButton />}
         </Button>
