@@ -31,7 +31,7 @@ const Navbar = () => {
           <NotebookIcon className="h-5 w-5 inline-block mb-1" />
           <span className="hidden md:block">Notes</span>
         </Link>
-        <h1 className="text-xl md:text-2xl font-semibold tracking-tighter text-primary rounded-xl">CoreContext</h1>
+        <h1 className="text-xl md:text-2xl font-semibold tracking-tighter text-primary rounded-xl">PG-AI</h1>
         <Link href="/chats" className={cn("flex flex-col items-center rounded-xl p-2", pathname === "/chats" && "text-primary bg-primary/10")}>
           <ChatBubbleIcon className="h-5 w-5 inline-block mb-1" />
           <span className="hidden md:block">Chats</span>
