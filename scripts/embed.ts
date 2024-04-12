@@ -12,7 +12,7 @@ const generateEmbeddings = async (essays: PGEssay[]) => {
     apiKey: process.env.PINECONE_API_KEY!,
   });
 
-  const index = pc.Index("pg-ai");
+  const index = pc.Index("pg-chunks");
 
   console.log(`Starting to generate embeddings for ${essays.length} essays.`);
   for (let i = 0; i < essays.length; i++) {

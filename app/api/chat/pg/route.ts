@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     const pc = new Pinecone({
       apiKey: process.env.PINECONE_API_KEY!,
     });
-    const index = pc.Index("pg-ai");
+    const index = pc.Index("pg-chunks");
 
     const { messages } = await req.json();
     console.log(
