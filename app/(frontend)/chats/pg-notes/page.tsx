@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Message } from "ai";
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react"; // Add useState to the import
 // Import the AudioRecorder component
 import AudioRecorder from "@/components/whisperaudio";
 import { Textarea } from "@/components/ui/textarea";
@@ -19,6 +19,7 @@ import { useToast } from "@/components/ui/use-toast";
 
 export default function NotesChatBox() {
   const { toast } = useToast();
+  const [isSaving, setIsSaving] = useState(false); // Add this line to manage the saving state
   const {
     messages,
     input,
@@ -40,9 +41,18 @@ export default function NotesChatBox() {
       const scrollElement = scrollRef.current;
       const lastMessageElement = scrollElement.lastChild;
       if (lastMessageElement) {
-        (lastMessageElement as HTMLElement).scrollIntoView({
-          behavior: "smooth",
-        });
+        // Introduce a delay before scrolling
+        setTimeout(() => {
+          // Ensure smooth scrolling by custom implementation
+          const scrollToBottom = () => {
+            const maxScrollTop = scrollElement.scrollHeight - scrollElement.clientHeight;
+            if (scrollElement.scrollTop < maxScrollTop) {
+              scrollElement.scrollTop += 5; // Adjust the increment value as needed for smoother scrolling
+              requestAnimationFrame(scrollToBottom);
+            }
+          };
+          scrollToBottom();
+        }, 5000); // Delay in milliseconds, adjust as needed
       }
     }
   }, [messages]);
@@ -56,6 +66,7 @@ export default function NotesChatBox() {
   };
 
   const handleSaveChat = async () => {
+    setIsSaving(true); // Start loading
     const currentConversation = messages
       .map((msg) => `${msg.role}: ${msg.content}`)
       .join("\n\n");
@@ -90,14 +101,15 @@ export default function NotesChatBox() {
     } else {
       console.error("Failed to save chat to notes.");
     }
+    setIsSaving(false); // End loading
   };
 
   return (
     <div className="mx-auto flex max-w-4xl flex-col mt-16 py-10 border px-4 rounded-xl shadow-xl">
-      <h1 className="text-2xl font-bold text-center text-muted-foreground mb-2">
+      <h1 className="text-2xl font-bold text-center text-muted-foreground mb-4">
         Contextual PG
       </h1>
-      <div className="mx-auto max-w-3xl" ref={scrollRef}>
+      <div className="mx-auto max-w-3xl overflow-y-auto" ref={scrollRef}>
         {messages.map((message) => (
           <ChatMessage message={message} key={message.id} />
         ))}
@@ -165,8 +177,9 @@ export default function NotesChatBox() {
             size="sm"
             className=""
             onClick={handleSaveChat}
+            disabled={isSaving} // Disable the button when isSaving is true
           >
-            Save Chat
+            {isSaving ? "Saving..." : "Save Chat"}
           </Button>
         </div>
       </div>

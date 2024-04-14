@@ -7,25 +7,22 @@ async function insertLabels() {
     await db.label.createMany({
       data: [
         {
-          name: "Accountability",
+          name: "Chat History",
         },
         {
-          name: "Dailys",
+          name: "Currently Working on",
         },
         {
-          name: "Development",
+          name: "Current Challenges",
         },
         {
-          name: "Workouts",
+          name: "Background",
         },
         {
-          name: "Macro",
+          name: "Curiosities and Considerations",
         },
         {
-          name: "Reading",
-        },
-        {
-          name: "No Label",
+          name: "Long Term Goals",
         },
       ],
     });
