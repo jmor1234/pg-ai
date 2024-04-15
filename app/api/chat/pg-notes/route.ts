@@ -47,7 +47,6 @@ export async function POST(req: Request) {
     const user = await currentUser();
     const firstName = user?.firstName || "User has not provided their name yet"
 
-    const userName = user?.firstName;
     const [pgQueryResponse, notesQueryResponse] = await Promise.all([
       pgIndex.query({
         topK: 6,
@@ -117,6 +116,8 @@ export async function POST(req: Request) {
       )
       .join(`\n\n`)}
     </userContext>
+
+    The current user's first name is ${firstName}.
     
     <instructions>
     - Engage the user in a natural, free-flowing, empathetic, and curious-minded conversation driven by their questions, thoughts, and insights related to Paul Graham's essays.

@@ -117,7 +117,7 @@ export default function NotesChatBox() {
           <ChatMessage
             message={{
               role: "assistant",
-              content: "Thinking...",
+              content: "Finding the most relevant data to bring into the conversation...",
             }}
           />
         )}
