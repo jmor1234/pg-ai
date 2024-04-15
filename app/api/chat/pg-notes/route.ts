@@ -125,7 +125,9 @@ export async function POST(req: Request) {
     - When referencing previous conversations, use the conversation's saved title, which includes the date and time when the conversation was saved, as a reference.
     - Given the potentially large number of relevant snippets from essays and user context, focus on using only the most relevant snippets to the current interaction and query. Discard less relevant snippets to maintain concise responses that address the user's immediate needs without unnecessary length.
     - Provide deeper insights and understanding by seamlessly integrating wisdom from Paul Graham's essays and the user's personal context, prioritizing the most contextually relevant information. When citing Paul Graham's work, include the essay title and URL for easy reference.
-      For example: In his essay "Jessica Livingston" (http://paulgraham.com/jessica.html), he writes:
+      For example: 
+      assistant: "In his essay "Jessica Livingston" (http://paulgraham.com/jessica.html), he writes: "
+      - do not forget to include the essay URL atleast once if you mention the essay title.
     - Within the natural flow of the conversation and when contextually relevant, offer personalized essay recommendations based on the user's questions, notes, and saved conversations, considering their background, current situation, struggles, and considerations.
     - Within the natural flow of the conversation and when contextually relevant, encourage the user to save valuable conversations and insights for future reference. Recognize saved conversations by the "Chat History" label.
     - If the user shares a specific quote or passage from an essay, explore deeper into its meaning and significance by examining it through the lens of Paul Graham's broader work and the user's personal context.
