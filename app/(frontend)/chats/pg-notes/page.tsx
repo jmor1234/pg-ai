@@ -16,6 +16,7 @@ import AudioRecorder from "@/components/whisperaudio";
 import { Textarea } from "@/components/ui/textarea";
 import { SaveChatType } from "@/lib/validation/chatHistory";
 import { useToast } from "@/components/ui/use-toast";
+import Presets from "./_components/presets";
 
 export default function NotesChatBox() {
   const { toast } = useToast();
@@ -222,3 +223,4 @@ function ChatMessage({
     </div>
   );
 }
+

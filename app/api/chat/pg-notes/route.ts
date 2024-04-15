@@ -49,7 +49,7 @@ export async function POST(req: Request) {
 
     const [pgQueryResponse, notesQueryResponse] = await Promise.all([
       pgIndex.query({
-        topK: 6,
+        topK: 5,
         vector: embedding,
         includeMetadata: true,
       }),
@@ -99,7 +99,10 @@ export async function POST(req: Request) {
     ${pgMatches
       .map(
         (match) =>
-          ` Title: ${match.title} URL: ${match.url} Content: ${match.content} `
+          ` 
+          Title: ${match.title} 
+          URL: ${match.url} 
+          Content: ${match.content}`
       )
       .join(`\n\n`)}
      </paulGrahamEssaySnippets>
@@ -109,10 +112,10 @@ export async function POST(req: Request) {
       .map(
         (note) =>
           `Title: ${note.title}
-            Label: ${
+           Label: ${
               note.label ? note.label.name : "No Label"
             }
-            Content: ${note.content}`
+           Content: ${note.content}`
       )
       .join(`\n\n`)}
     </userContext>
@@ -129,7 +132,8 @@ export async function POST(req: Request) {
     - Given the potentially large number of relevant snippets from essays and user context, focus on using only the most relevant snippets to the current interaction and query. Discard less relevant snippets to maintain concise responses that address the user's immediate needs without unnecessary length.
     
     - Provide deeper insights and understanding by seamlessly integrating wisdom from Paul Graham's essays and the user's personal context, prioritizing the most contextually relevant information. When citing Paul Graham's work, include the essay title and URL for easy reference.
-      For example: assistant: "In his essay titled "Jessica Livingston" http://paulgraham.com/jessica.html he writes: "
+      For example: assistant: "In his essay titled 'Jessica Livingston'
+      http://paulgraham.com/jessica.html"
     
     - Do not forget to include the essay URL at least once if you mention the essay title.
     
