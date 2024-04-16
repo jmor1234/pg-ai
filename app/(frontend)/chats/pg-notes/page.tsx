@@ -1,5 +1,3 @@
-// app/(frontend)/chats/pg-notes/page.tsx
-
 "use client";
 
 import { cn } from "@/lib/utils";
@@ -10,17 +8,15 @@ import { Button } from "@/components/ui/button";
 import { Message } from "ai";
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react"; // Add useState to the import
+import { useEffect, useRef, useState } from "react";
 // Import the AudioRecorder component
 import AudioRecorder from "@/components/whisperaudio";
 import { Textarea } from "@/components/ui/textarea";
 import { SaveChatType } from "@/lib/validation/chatHistory";
 import { useToast } from "@/components/ui/use-toast";
-import Presets from "./_components/presets";
 
 export default function NotesChatBox() {
   const { toast } = useToast();
-  const [isSaving, setIsSaving] = useState(false); // Add this line to manage the saving state
   const {
     messages,
     input,
@@ -33,30 +29,44 @@ export default function NotesChatBox() {
     api: `/api/chat/pg-notes`,
   });
 
+  const [dropdownValue, setDropdownValue] = useState("default");
+
+  const kickStarters = [
+    "Is the struggle of building a startup worth it?",
+    "How is the way tech founders become wealthy fundamentally different from traditional paths to riches?",
+    "Why may it be a better path for many to be an early employee to a startup rather than the founder?",
+    "Is burning the midnight oil actually smart?",
+    "What role does age play in being successful in the tech industry?",
+    "Talk to me about failure",
+    "I'm contemplating the tension between being a successful founder and successful parent simultaneously",
+    "Should you first solve the money problem to have the freedom to pursue your own curiosities and passions?",
+    "Do I need to be mean to be an effective leader like Steve Jobs was?",
+    "Can non-technical startup founders achieve the same level of long-term wealth as technical founders who know how to code?",
+    "Talk to me about hiring and firing within a startup",
+    "Why would any smart capable person choose to work for me of all the options they have?",
+    "Based on what you know about me thus far, what should we discuss?",
+    "What new information should I provide in order for you to be able to provide me the most contextually relevant insights?",
+    "Why are the first few users the most difficult AND most important simultaneously?",
+    "Why would any investor want to give me money?",
+    "Is my startup idea just a glorified hobby, or a legitimate business opportunity?",
+    "Solving a specific niche problem vs a more broad general problem when starting a company",
+    "Should I be worried about others copying me?",
+    "Why is curiosity so important?",
+    "What is really the key to building something valuable long term?"
+  ];
+
+  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const updatedInput = `${input} ${event.target.value}`.trim();
+    const syntheticEvent = {
+      target: { value: updatedInput },
+    } as unknown as React.ChangeEvent<HTMLTextAreaElement>;
+    handleInputChange(syntheticEvent);
+    setDropdownValue("default"); // Reset dropdown after selection
+  };
+
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const lastMessageIsUser = messages[messages.length - 1]?.role === "user";
-
-  useEffect(() => {
-    if (scrollRef.current) {
-      const scrollElement = scrollRef.current;
-      const lastMessageElement = scrollElement.lastChild;
-      if (lastMessageElement) {
-        // Introduce a delay before scrolling
-        setTimeout(() => {
-          // Ensure smooth scrolling by custom implementation
-          const scrollToBottom = () => {
-            const maxScrollTop = scrollElement.scrollHeight - scrollElement.clientHeight;
-            if (scrollElement.scrollTop < maxScrollTop) {
-              scrollElement.scrollTop += 5; // Adjust the increment value as needed for smoother scrolling
-              requestAnimationFrame(scrollToBottom);
-            }
-          };
-          scrollToBottom();
-        }, 5000); // Delay in milliseconds, adjust as needed
-      }
-    }
-  }, [messages]);
 
   const handleTranscriptionComplete = (transcription: string) => {
     const updatedInput = `${input} ${transcription}`.trim();
@@ -67,7 +77,6 @@ export default function NotesChatBox() {
   };
 
   const handleSaveChat = async () => {
-    setIsSaving(true); // Start loading
     const currentConversation = messages
       .map((msg) => `${msg.role}: ${msg.content}`)
       .join("\n\n");
@@ -102,12 +111,11 @@ export default function NotesChatBox() {
     } else {
       console.error("Failed to save chat to notes.");
     }
-    setIsSaving(false); // End loading
   };
 
   return (
     <div className="mx-auto flex max-w-4xl flex-col mt-16 py-10 border px-4 rounded-xl shadow-xl">
-      <h1 className="text-2xl font-bold text-center text-muted-foreground mb-4">
+      <h1 className="text-2xl font-bold text-center text-muted-foreground mb-2">
         Contextual PG
       </h1>
       <div className="mx-auto max-w-3xl overflow-y-auto" ref={scrollRef}>
@@ -118,7 +126,8 @@ export default function NotesChatBox() {
           <ChatMessage
             message={{
               role: "assistant",
-              content: "Finding the most relevant data to bring into the conversation...",
+              content:
+                "Finding the relevant data to bring into the conversation...",
             }}
           />
         )}
@@ -133,28 +142,42 @@ export default function NotesChatBox() {
       </div>
       <form
         onSubmit={handleSubmit}
-        className="mt-4 flex items-center justify-center gap-2"
+        className="mt-4 flex flex-col items-center justify-center gap-2"
       >
-        <textarea
-          className="max-w-prose whitespace-pre-wrap rounded-xl border px-3 py-2 text-sm shadow-md flex-grow"
-          placeholder="Interact with PG insights"
-          value={input}
-          onChange={handleInputChange}
-          onKeyDown={(event) => {
-            if (event.key === "Enter" && !event.shiftKey) {
-              event.preventDefault(); // Prevents the default action of the Enter key
-              // Create a synthetic event object
-              const syntheticEvent = {
-                preventDefault: () => {}, // Mock preventDefault method
-                stopPropagation: () => {}, // Mock stopPropagation method
-              } as React.FormEvent<HTMLFormElement>;
-              handleSubmit(syntheticEvent); // Pass the synthetic event to handleSubmit
-            }
-          }}
-        />
-        <Button className="" type="submit" size="sm">
-          Send
-        </Button>
+        <select
+          className="rounded-lg text-sm text-muted-foreground mt-2 text-center py-1 px-2 max-w-[500px]"
+          onChange={handleSelectChange}
+          value={dropdownValue}
+        >
+          <option value="default" className="">Common Questions & Conversation Starters</option>
+          {kickStarters.map((prompt, index) => (
+            <option className="" key={index} value={prompt}>
+              {prompt}
+            </option>
+          ))}
+        </select>
+        <div className="flex items-center justify-center gap-2 w-full">
+          <textarea
+            className="max-w-prose whitespace-pre-wrap rounded-xl border px-3 py-2 text-sm shadow-md flex-grow"
+            placeholder="What are you curious about at the moment?"
+            value={input}
+            onChange={handleInputChange}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" && !event.shiftKey) {
+                event.preventDefault(); // Prevents the default action of the Enter key
+                // Create a synthetic event object
+                const syntheticEvent = {
+                  preventDefault: () => {}, // Mock preventDefault method
+                  stopPropagation: () => {}, // Mock stopPropagation method
+                } as React.FormEvent<HTMLFormElement>;
+                handleSubmit(syntheticEvent); // Pass the synthetic event to handleSubmit
+              }
+            }}
+          />
+          <Button className="" type="submit" size="sm">
+            Send
+          </Button>
+        </div>
       </form>
       <div className=" my-1 max-w-[150px] sm:max-w-[200px] w-full mx-auto mt-2">
         <div className="flex items-center justify-center md:gap-3 sm:gap-2">
@@ -178,9 +201,8 @@ export default function NotesChatBox() {
             size="sm"
             className=""
             onClick={handleSaveChat}
-            disabled={isSaving} // Disable the button when isSaving is true
           >
-            {isSaving ? "Saving..." : "Save Chat"}
+            Save Chat
           </Button>
         </div>
       </div>
@@ -223,4 +245,3 @@ function ChatMessage({
     </div>
   );
 }
-
