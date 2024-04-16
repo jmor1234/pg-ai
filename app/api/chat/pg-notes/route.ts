@@ -20,7 +20,7 @@ export async function POST(req: Request) {
 
     const { messages } = await req.json();
     console.log(
-      `Received ${messages.length} messages. Processing the last 6 messages...`
+      `Received ${messages.length} messages. Processing messages...`
     );
     const recentMessages = messages.slice(-10);
     console.log(

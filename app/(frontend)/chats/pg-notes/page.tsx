@@ -9,7 +9,6 @@ import { Message } from "ai";
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-// Import the AudioRecorder component
 import AudioRecorder from "@/components/whisperaudio";
 import { Textarea } from "@/components/ui/textarea";
 import { SaveChatType } from "@/lib/validation/chatHistory";

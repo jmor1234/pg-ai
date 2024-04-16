@@ -11,25 +11,19 @@ const HomePage = () => {
         <div className="flex flex-col items-center">
           <UserButton />
         </div>
-        <h1 className="text-2xl font-bold text-center">PG-AI</h1>
+        <h1 className="text-2xl font-bold text-center">Context-PG</h1>
         <Button className="border border-gray-300" variant="outline" asChild>
           {userId ? <SignOutButton /> : <SignInButton />}
         </Button>
+        <Button className="" variant="destructive" asChild>
+          <Link href="/chats/pg-notes">Chat With Assistant</Link>
+        </Button>
         <Button
-          className="border border-gray-300 bg-primary/10 text-primary"
-          variant="outline"
+          className=""
+          variant="secondary"
           asChild
         >
-          <Link href="/notes">Get to Notes</Link>
-        </Button>
-        <Button className="" asChild>
-          <Link href="/chats/notes">Chat With Notes</Link>
-        </Button>
-        <Button className="bg-secondary text-primary border" asChild>
-          <Link href="/chats/pg">Chat with Paul Graham</Link>
-        </Button>
-        <Button className="" variant="destructive" asChild>
-          <Link href="/chats/pg-notes">Chat with Paul Graham + your notes</Link>
+          <Link href="/notes">See Your Notes</Link>
         </Button>
       </div>
     </div>
