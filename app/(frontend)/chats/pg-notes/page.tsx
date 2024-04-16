@@ -33,23 +33,23 @@ export default function NotesChatBox() {
 
   const kickStarters = [
     "Is the struggle of building a startup worth it?",
-    "How is the way tech founders become wealthy fundamentally different from traditional paths to riches?",
-    "Why may it be a better path for many to be an early employee to a startup rather than the founder?",
+    "How is the way tech founders become wealthy fundamentally different?",
+    "Why might joining a startup early be better than founding one?",
     "Is burning the midnight oil actually smart?",
     "What role does age play in being successful in the tech industry?",
     "Talk to me about failure",
-    "I'm contemplating the tension between being a successful founder and successful parent simultaneously",
-    "Should you first solve the money problem to have the freedom to pursue your own curiosities and passions?",
+    "Can one successfully balance being a founder and parent?",
+    "prioritize financial freedom or curiosities and passions?",
     "Do I need to be mean to be an effective leader like Steve Jobs was?",
-    "Can non-technical startup founders achieve the same level of long-term wealth as technical founders who know how to code?",
+    "Can non-technical founders achieve the same wealth as technical ones?",
     "Talk to me about hiring and firing within a startup",
-    "Why would any smart capable person choose to work for me of all the options they have?",
+    "Why would a smart, capable person choose to work for me?",
     "Based on what you know about me thus far, what should we discuss?",
-    "What new information should I provide in order for you to be able to provide me the most contextually relevant insights?",
+    "What additional context should I provide for the most relevant insights?",
     "Why are the first few users the most difficult AND most important simultaneously?",
     "Why would any investor want to give me money?",
     "Is my startup idea just a glorified hobby, or a legitimate business opportunity?",
-    "Solving a specific niche problem vs a more broad general problem when starting a company",
+    "Niche vs broad problem-solving when starting a company",
     "Should I be worried about others copying me?",
     "Why is curiosity so important?",
     "What is really the key to building something valuable long term?"
@@ -145,13 +145,13 @@ export default function NotesChatBox() {
         className="mt-4 flex flex-col items-center justify-center gap-2"
       >
         <select
-          className="rounded-lg text-sm text-muted-foreground mt-2 text-center py-1 px-2 max-w-[500px]"
+          className="rounded-lg text-sm text-muted-foreground mt-2 text-center py-1 px-2 w-full max-w-[500px]"
           onChange={handleSelectChange}
           value={dropdownValue}
         >
           <option value="default" className="">Common Questions & Conversation Starters</option>
           {kickStarters.map((prompt, index) => (
-            <option className="" key={index} value={prompt}>
+            <option className="" key={index} value={prompt} style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>
               {prompt}
             </option>
           ))}

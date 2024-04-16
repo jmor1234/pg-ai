@@ -68,3 +68,15 @@
   background-color: gray;
   border-radius: 2px;
 }
+
+@media (max-width: 600px) { /* Adjust 600px based on your needs */
+  select {
+    width: 100%; /* Full width on small screens */
+  }
+}
+
+select option {
+  white-space: normal; /* Allows text to wrap */
+  word-break: break-word; /* Ensures words break to prevent overflow */
+}
+
