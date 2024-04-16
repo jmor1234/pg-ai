@@ -26,12 +26,6 @@ const SideBar = () => {
       href: '/labels',
       label: 'Manage Labels'
     },
-    {
-      icon: Settings,
-      href: '/settings',
-      label: 'Settings'
-    },
-
   ]
 
   const onNavigate = (url: string) => {
