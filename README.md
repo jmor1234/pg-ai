@@ -10,7 +10,7 @@ This can be used to augment and enhance your experience and comprehension whilst
 - You can provide more context or ask about a specific essay, concept, idea or really anything within an essay while you're reading etc.
 - Based on your conversation or question, ask what essay would be best for you to read next.
 
-## This can be used in addition to or separate from reading his essays for a completely different, deeper and contextually relevant experience. 
+## Separate from reading his essays for a completely different, deeper and contextually relevant experience. 
 - Ask any question you have, tech, startups, code, money, success, kids etc…(use the dropdown menu for great starter topic or questions).
 - Follow up and have an interactive conversation with an insightful, curious and empathetic assistant with the sole goal to provide you the most value from the data in Paul's Essays.
 - Valuable without directly providing any additional information about yourself or saving your conversations.
