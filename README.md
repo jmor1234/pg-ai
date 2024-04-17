@@ -10,7 +10,7 @@ This can be used to augment and enhance your experience and comprehension whilst
 - You can provide more context or ask about a specific essay, concept, idea or really anything within an essay while you're reading etc.
 - Based on your conversation or question, ask what essay would be best for you to read next.
 
-## Separate from reading his essays for a completely different, deeper and contextually relevant experience. 
+## Separate from reading his essays, this application offers a different, deeper, interactive and more contextually relevant experience. 
 - Ask any question you have, tech, startups, code, money, success, kids etc…(use the dropdown menu for great starter topic or questions).
 - Follow up and have an interactive conversation with an insightful, curious and empathetic assistant with the sole goal to provide you the most value from the data in Paul's Essays.
 - Valuable without directly providing any additional information about yourself or saving your conversations.
@@ -19,11 +19,11 @@ This can be used to augment and enhance your experience and comprehension whilst
 For those like me who consistently use other general AI tools, ChatGPT, Claude.AI, Gemini etc...
 I was trying to solve 2 issues that all of these applications currently have.
 
-1. Recall of other threads/conversations that you have previously had.
+1. Recall other threads/conversations that you have previously had.
    - if you start a new thread, ChatGPT, Claude.AI, Gemini etc... does not have recall to your other threads
    - The lack of recall across different threads or conversations is frustrating. Often, I need to copy and paste important information from previous threads, or ask the model to summarize our current thread so I can provide that context in a new thread. This process is tedious and inefficient.
 2. Clutter from automatically saving all threads/conversations
-   - Those other applications save every conversation by default. For me, I usually have only a couple of ongoing threads that I revisit, and I delete the rest to maintain a clean organization with only the important threads. Deleting most of them to keep clean is tedious. All i really want, is when i deem the current conversation valuable enough, i choose to save that, and then that interaction can be recalled by the assistant whenever contextually relevant.
+   - Those other applications save every conversation by default. For me, I usually have only a couple of ongoing threads that I revisit, and I delete the rest to maintain a clean organization with only the important threads. Deleting most of them to keep clean is tedious. All I really want is if I deem the current conversation valuable enough, I choose to save that, and then that interaction can be recalled by the assistant whenever contextually relevant.
 
 ## How This Application Addresses Those Issues
 - With a single click, you can save the current chat if you find it valuable.
@@ -44,34 +44,11 @@ Preset labels to guide the user towards providing information that would enhance
 - “Curiosities and Considerations”
 
 If contextually relevant to the current interaction, any note the user creates will be used to provide deeper insights and contextual interaction.
-This enhanced contextual relevance not only makes your interaction with the AI assistant better, but you get personalized essay recommendation on what to read next based on all your conversations and notes that you provided.
+This enhanced contextual relevance not only makes your interaction with the AI assistant better, but you get personalized essay recommendations on what to read next based on all your conversations and notes that you provided.
 
 ## Technical Details
 
 This application just leverages Claude-3-sonnet, RAG, prompting craftsmanship, and a simple UI to try and augment the experience of reading an essay, and to create a new unique interactive experience and ability to have a contextually relevant interaction with such a dense quality and quantity data source like all of Paul’s essays.
-
-### RAG for Contextually Relevant Interaction
-Leveraging both the external data (Paul’s Essays) and internal data (the user’s notes and saved previous conversations) to get the best experience.
-
-The user does not need to provide any information about themselves if they don't want to. You will get a great experience and interaction with the AI Assistant conversing and giving you insights based on relevant Paul Graham essay data.
-
-To significantly enhance their experience, the more internal data the user provides, the more contextually relevant the insights and interaction can be:
-- Preset Labels to get the user thinking in the right direction:
-  - “Background”
-  - “Currently Working On”
-  - “Long Term Goals”
-  - “Current Challenges”
-  - “Curiosities and Considerations”
-
-The last preset label is “Chat History”:
-- The notes within here are automatically created when the user chooses to save their current conversation if they deem valuable.
-- Doesn't get cluttered, the user only saves interactions they choose to.
-- Can Edit and Delete their Chat History Notes whenever needed to set better context and understanding in all future interactions with the model.
-
-Via the system message, the model is very aware that the user has these preset labels and saved conversations. When contextually relevant, the model helps the user provide information that would help the model provide more value in subsequent interactions.
-
-In the dropdown menu titled “Common Questions & Conversation Starters”:
-- Great way to get users started to diminish the blank page/conversation problem.
 
 ### Tech Stack:
 - Next.js 14 app router TypeScript
@@ -92,16 +69,18 @@ The core “magic” of this application and the Anthropic API use all happens w
   - `pg-chunks` index for the chunks of every essay.
   - `notes-gpt` index for all of the user's notes/saved conversations.
 - When the user sends a new query, up to the last 10 messages in the current interaction get embedded.
-- Using that recent messages embedding, query both Notes and Chunks index for similarity search on the vector embeddings.
+- Using that recent messages embedding, query both `pg-chunks` and `notes-gpt`  index for similarity search on the vector embeddings.
 - 5 most relevant notes and Chunks returned are contextually injected into the system message.
 
 ### System Message
 - Lots of testing and iterating to get it to perform the way I wanted.
 - Tried to adhere to the Claude Docs and best practices as best as possible.
 - Split into 3 sections:
-  - **Role**: Provides the overall context and high level understanding for the model.
-  - **RAG Data injection**: both the Essay Snippets and User Notes.
+  - **Role**: Provides the overall context and high level understanding of the task at hand for the model.
+  - **RAG Data injection**: both the Essay Snippets and User Notes are injected.
   - **Instructions**: Bullet point format clear precise instructions for what to do and how to interact.
+
+- The order of these is very intentional and important according to the Claude Docs prompt engineering.
 
 ### Vercel AI SDK for easy streaming and integration back the frontend UI
 
@@ -110,7 +89,7 @@ Located at `app/(frontend)/chats/pg-notes/page.tsx`:
 - Vercel AI SDK `useChat` hook.
 - Dropdown menu from `kickStarters` array of questions and conversation starters.
 - Whisper API Audio Transcription.
-- Save Chat Functionality creates an editable note with the conversation.
+- Save Chat Functionality creates a new note within the Chat History label.
 
 ## Notes Section
 Located at `app/(frontend)/notes`:
