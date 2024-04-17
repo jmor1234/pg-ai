@@ -15,14 +15,27 @@ This can be used to augment and enhance your experience and comprehension whilst
 - Follow up and have an interactive conversation with an insightful, curious and empathetic assistant with the sole goal to provide you the most value from the data in Paul's Essays.
 - Valuable without directly providing any additional information about yourself or saving your conversations.
 
-## Contextual Relevance
-The interactions become more contextually relevant overtime if you want/allow them to be.
-- Simply by saving a current chat if find it valuable with one click.
-- Saves automatically under “Chat History” label within notes.
-- Can edit or delete any saved conversation.
-- In all subsequent interactions the assistant will use that saved conversation when relevant to provide more contextual and insightful responses.
+## The multi-conversation/Threads Recall and Clutter issue of most modern LLM Applications
+For those like me who consistently use other general AI tools, ChatGPT, Claude.AI, Gemini etc...
+I was trying to solve 2 issues that all of these applications currently have.
 
-## Notes Section
+1. Recall of other threads/conversations that you have previously had.
+   - if you start a new thread, ChatGPT, Claude.AI, Gemini etc... does not have recall to your other threads
+   - The lack of recall across different threads or conversations is frustrating. Often, I need to copy and paste important information from previous threads, or ask the model to summarize our current thread so I can provide that context in a new thread. This process is tedious and inefficient.
+2. Clutter from automatically saving all threads/conversations
+   - Those other applications save every conversation by default. For me, I usually have only a couple of ongoing threads that I revisit, and I delete the rest to maintain a clean organization with only the important threads. Deleting most of them to keep clean is tedious. All i really want, is when i deem the current conversation valuable enough, i choose to save that, and then that interaction can be recalled by the assistant whenever contextually relevant.
+
+## How This Application Addresses Those Issues
+- With a single click, you can save the current chat if you find it valuable.
+- Saved chats are automatically stored under the "Chat History" label within notes.
+- You can edit or delete any saved conversation to make necessary adjustments.
+- In all subsequent interactions, the assistant will utilize relevant saved conversations to provide more contextual and insightful responses.
+- This approach allows you to save only valuable conversations without clutter, as those saved chats will be seamlessly recalled in subsequent interactions when relevant, eliminating the need to copy and paste from previous conversations, and try to get your new thread up to speed on the relevant information manually.
+
+## Notes Section to increase contextual relevance
+The interactions become more contextually relevant overtime if you want/allow them to be.
+Adding Notes to be recalled when relevant to a conversation is the key way to enable this.
+
 Preset labels to guide the user towards providing information that would enhance their experience of:
 - “Background”
 - “Currently Working On”
