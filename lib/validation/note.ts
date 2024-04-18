@@ -1,8 +1,8 @@
 import {z} from "zod"
 
 export const createNoteSchema = z.object({
-    title: z.string().min(1, { message: "A Title is required"}),
-    content: z.string().min(1, { message: "Content of Note is required"}),
+    title: z.string().optional(),
+    content: z.string().optional(),
     labelId: z.string().optional()
 })
 

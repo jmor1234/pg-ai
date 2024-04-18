@@ -6,6 +6,7 @@ import { AnthropicStream, StreamingTextResponse } from "ai";
 import { Pinecone } from "@pinecone-database/pinecone";
 import { auth, currentUser } from "@clerk/nextjs";
 import prisma from "@/lib/db/prismaSingelton";
+import { countTokens } from "@anthropic-ai/tokenizer";
 
 export async function POST(req: Request) {
   try {
@@ -86,6 +87,13 @@ export async function POST(req: Request) {
       },
     });
 
+    const currentDate = new Date().toLocaleDateString('en-US');
+    const currentTime = new Date().toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true
+    });
+
     const systemMessage = `
     <role>
     As a knowledgeable AI assistant, your primary goal is to engage the user in natural, free-flowing, empathetic, and curious-minded conversations while providing contextually relevant insights and personalized recommendations based on Paul Graham's essays and the user's personal context.
@@ -121,6 +129,8 @@ export async function POST(req: Request) {
     </userContext>
     
     The current user's first name is ${firstName}.
+    The current date is ${currentDate}.
+    The current time is ${currentTime}.
 
     <instructions>
     - Engage the user in a natural, free-flowing, empathetic, and curious-minded conversation driven by their questions, thoughts, and insights related to Paul Graham's essays.
@@ -152,7 +162,7 @@ export async function POST(req: Request) {
     - Assume that the user's questions or statements, even if they lack specific context, are intended to gain insights from Paul Graham's essays. Do not mention any lack of personal perspective or experience. Instead, focus exclusively on providing relevant information and insights from Paul Graham's essays to address the user's query.
     </instructions>`;
       
-
+    console.log(`System Prompt Token Length: ${countTokens(systemMessage)}`)
     console.log(`System Message: ${systemMessage}`);
     console.log(`Messages: ${JSON.stringify(messages, null, 2)}`);
 

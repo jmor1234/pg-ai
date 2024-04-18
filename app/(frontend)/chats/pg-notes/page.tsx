@@ -13,6 +13,7 @@ import AudioRecorder from "@/components/whisperaudio";
 import { Textarea } from "@/components/ui/textarea";
 import { SaveChatType } from "@/lib/validation/chatHistory";
 import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 export default function NotesChatBox() {
   const { toast } = useToast();
@@ -29,6 +30,8 @@ export default function NotesChatBox() {
   });
 
   const [dropdownValue, setDropdownValue] = useState("default");
+  const [isSaving, setIsSaving] = useState(false);
+  const router = useRouter();
 
   const kickStarters = [
     "Is the struggle of building a startup worth it?",
@@ -76,14 +79,15 @@ export default function NotesChatBox() {
   };
 
   const handleSaveChat = async () => {
+    setIsSaving(true); // Set loading state before the request
     const currentConversation = messages
       .map((msg) => `${msg.role}: ${msg.content}`)
       .join("\n\n");
     const chatData: SaveChatType = {
       title: `Chat on ${new Date().toLocaleString("en-US", {
-        year: "numeric", // Add year
-        month: "2-digit", // Add month
-        day: "2-digit", // Add day
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
         hour: "2-digit",
         minute: "2-digit",
         hour12: true,
@@ -104,12 +108,13 @@ export default function NotesChatBox() {
       console.log("Chat saved to notes successfully.");
       toast({
         title: "Chat Saved",
-        description:
-          "Your chat has been saved to your notes under the label Chat History.",
+        description: "Your chat has been saved to your notes under the label Chat History.",
       });
     } else {
       console.error("Failed to save chat to notes.");
     }
+    router.refresh();
+    setIsSaving(false); // Reset loading state after the request
   };
 
   return (
@@ -200,8 +205,9 @@ export default function NotesChatBox() {
             size="sm"
             className=""
             onClick={handleSaveChat}
+            disabled={isSaving} // Disable button when saving
           >
-            Save Chat
+            {isSaving ? "Saving..." : "Save This Interaction"}
           </Button>
         </div>
       </div>
