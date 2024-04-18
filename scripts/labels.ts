@@ -7,6 +7,9 @@ async function insertLabels() {
     await db.label.createMany({
       data: [
         {
+          name: "No Label",
+        },
+        {
           name: "Chat History",
         },
         {
