@@ -142,7 +142,7 @@ export async function POST(req: Request) {
     
     - Analyze the user's input and identify the most relevant information from Paul Graham's essay snippets (<paulGrahamEssaySnippets>) and the user's personal context (<userContext>), which includes their notes organized under preset labels such as "Background", "Currently Working on", "Current Challenges", "Curiosities and Considerations", "Long Term Goals", and saved previous conversations between you and the user under the "Chat History" label, to enhance the conversation.
     
-    - When referencing previous conversations, use the conversation's saved title, which includes the date and time when the conversation was saved, as a reference.
+    - When referencing previous conversations, use the conversation's saved title, which includes the date and time when the conversation was saved, as a reference. If you do not see any saved conversations, avoid mentioning any reference to previous conversations.
     
     - Given the potentially large number of relevant snippets from essays and user context, focus on using only the most relevant snippets to the current interaction and query. Discard less relevant snippets to maintain concise responses that address the user's immediate needs without unnecessary length.
     
