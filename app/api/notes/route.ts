@@ -170,6 +170,12 @@ export async function PUT(req: Request) {
       return Response.json({ error: "Note not found" }, { status: 404 });
     }
 
+    // Check if the note belongs to the user
+    if (existingNote.userId !== userId) {
+      console.error("Unauthorized attempt to access a note");
+      return Response.json({ error: "Unauthorized" }, { status: 403 });
+    }
+
     await prisma.$transaction(async (tx) => {
       // Update the existing note with the first chunk
       await tx.note.update({
@@ -229,6 +235,13 @@ export async function DELETE(req: Request) {
       console.error("Note not found for DELETE");
       return Response.json({ error: "Note not found" }, { status: 404 });
     }
+
+    // Check if the note belongs to the user
+    if (existingNote.userId !== userId) {
+      console.error("Unauthorized attempt to delete a note");
+      return Response.json({ error: "Unauthorized" }, { status: 403 });
+    }
+
     console.log(
       "Existing note found, proceeding to database transaction for DELETE"
     );
@@ -245,4 +258,3 @@ export async function DELETE(req: Request) {
     return Response.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
-
