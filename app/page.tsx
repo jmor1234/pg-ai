@@ -17,26 +17,32 @@ const HomePage = () => {
         </Button>
       </div>
       <div className="flex flex-col my-2 gap-4">
-        <div className="flex flex-col items-center justify-center my-1 gap-1">
+        <div className="flex flex-col items-center justify-center my-1 gap-2">
+          <p className="max-w-prose text-center">
+            See the why and how of this application.
+          </p>
+          <Button className="max-w-fit bg-secondary text-primary border border-primary/90"  asChild>
+            <Link href="/about">Why & How</Link>
+          </Button>
+        </div>
+        <div className="flex flex-col items-center justify-center my-1 gap-2">
           <p className="max-w-prose text-center">
             Insightful, curious and contextually relevant conversation <br></br>{" "}
             based on Paul Graham&apos;s essays.
           </p>
-          <Button className="max-w-fit" variant='destructive' asChild>
+          <Button className="max-w-fit" variant="destructive" asChild>
             <Link href="/chats/pg-notes">Chat With Assistant</Link>
           </Button>
         </div>
       </div>
       <div className="flex flex-col my-2 gap-4">
-        <div className="flex flex-col items-center justify-center my-1 gap-1">
+        <div className="flex flex-col items-center justify-center my-1 gap-2">
           <p className="max-w-prose text-center">
-            Create notes to enhance the contextual relevance of your interaction <br></br>
+            Create notes to enhance the contextual relevance of your interaction{" "}
+            <br></br>
             and insights when conversing with the AI Assistant.
           </p>
-          <Button
-            className="max-w-fit border border-primary/50"
-            asChild
-          >
+          <Button className="max-w-fit border border-primary/50" asChild>
             <Link href="/notes">See Your Notes</Link>
           </Button>
         </div>
