@@ -1,3 +1,5 @@
+// app/api/notes/chatHistory/route.ts
+
 import { saveChatSchema } from "@/lib/validation/chatHistory";
 import { auth } from "@clerk/nextjs";
 import OpenAI from "openai";

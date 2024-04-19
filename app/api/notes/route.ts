@@ -123,14 +123,13 @@ export async function PUT(req: Request) {
       console.error("Validation failed on PUT", validation.error);
       return Response.json({ error: "Invalid note data" }, { status: 400 });
     }
-    const { id, title = "", content = "", labelId = "" } = validation.data; // Provide default empty strings
+    const { id, title = "", content = "", labelId = "" } = validation.data;
     const { userId } = auth();
     console.log(`Authenticated user ID on PUT: ${userId}`);
     if (!userId) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Fetch the label name using labelId
     const label = await prisma.label.findUnique({
       where: { id: labelId },
     });
@@ -139,15 +138,30 @@ export async function PUT(req: Request) {
       return Response.json({ error: "Label not found" }, { status: 404 });
     }
 
-    // Include the label name in the noteText
-    const noteText = `Title: ${title}\nLabel: ${label.name}\nContent: ${content}`;
-    console.log("Text to be embedded for PUT:", noteText);
-    const createEmbedding = await openai.embeddings.create({
-      model: "text-embedding-ada-002",
-      input: noteText,
-    });
-    const noteEmbedding = createEmbedding.data[0].embedding;
-    console.log("Embedding created, checking for existing note");
+    console.log(`Content Token Length: ${countTokens(content)}`);
+    const contentChunks: string[] = [];
+    let currentChunk = "";
+    const elements = content.split(/(?<=\n|\.|\?|!)/g);
+
+    for (const element of elements) {
+      if (element === "\n" || /^\s*$/.test(element)) {
+        currentChunk += element;
+      } else {
+        const testChunk = currentChunk + element;
+        if (countTokens(testChunk) <= maxContentTokens) {
+          currentChunk = testChunk;
+        } else {
+          if (currentChunk.trim().length > 0) {
+            contentChunks.push(currentChunk);
+          }
+          currentChunk = element;
+        }
+      }
+    }
+    if (currentChunk.trim().length > 0) {
+      contentChunks.push(currentChunk);
+    }
+
     const existingNote = await prisma.note.findUnique({
       where: { id },
     });
@@ -155,32 +169,37 @@ export async function PUT(req: Request) {
       console.error("Note not found");
       return Response.json({ error: "Note not found" }, { status: 404 });
     }
-    console.log(
-      "Existing note found, proceeding to database transaction for PUT"
-    );
-    const updateNote = await prisma.$transaction(async (tx) => {
-      const updateNote = await tx.note.update({
+
+    await prisma.$transaction(async (tx) => {
+      // Update the existing note with the first chunk
+      await tx.note.update({
         where: { id },
         data: {
-          title,
-          content,
+          title: title + (contentChunks.length > 1 ? " (Part 1)" : ""),
+          content: contentChunks[0],
           userId,
           label: {
             connect: { id: labelId },
           },
         },
       });
-      await notesIndex.upsert([
-        {
-          id: updateNote.id,
-          values: noteEmbedding,
-          metadata: { userId },
-        },
-      ]);
-      return updateNote;
+
+      // Create new notes for additional chunks
+      for (let i = 1; i < contentChunks.length; i++) {
+        await tx.note.create({
+          data: {
+            title: `${title} (Part ${i + 1})`,
+            content: contentChunks[i],
+            userId,
+            label: {
+              connect: { id: labelId },
+            },
+          },
+        });
+      }
     });
-    console.log("Note updated and indexed successfully");
-    return Response.json({ updateNote }, { status: 200 });
+
+    return Response.json({ message: "Notes updated and indexed successfully" }, { status: 200 });
   } catch (error) {
     console.error("An error occurred on PUT", error);
     return Response.json({ error: "Internal Server Error" }, { status: 500 });
@@ -226,3 +245,4 @@ export async function DELETE(req: Request) {
     return Response.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
+
