@@ -3,7 +3,12 @@ import { auth } from "@clerk/nextjs";
 import OpenAI from "openai";
 import { Pinecone } from "@pinecone-database/pinecone";
 import prisma from "@/lib/db/prismaSingelton";
-import { countTokens } from "@anthropic-ai/tokenizer";
+
+function countTokens(text: string): number {
+  const words = text.split(/\s+/).filter(Boolean);
+  const newLines = (text.match(/\n/g) || []).length;
+  return words.length + newLines;
+}
 
 const maxContentTokens = 1000; 
 

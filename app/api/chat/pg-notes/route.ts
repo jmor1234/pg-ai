@@ -6,7 +6,12 @@ import { AnthropicStream, StreamingTextResponse } from "ai";
 import { Pinecone } from "@pinecone-database/pinecone";
 import { auth, currentUser } from "@clerk/nextjs";
 import prisma from "@/lib/db/prismaSingelton";
-import { countTokens } from "@anthropic-ai/tokenizer";
+
+function countTokens(text: string): number {
+  const words = text.split(/\s+/).filter(Boolean);
+  const newLines = (text.match(/\n/g) || []).length;
+  return words.length + newLines;
+}
 
 export async function POST(req: Request) {
   try {

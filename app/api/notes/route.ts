@@ -8,7 +8,6 @@ import OpenAI from "openai";
 import { Pinecone } from "@pinecone-database/pinecone";
 import prisma from "@/lib/db/prismaSingelton";
 import { metadata } from "@/app/layout";
-import { countTokens } from "@anthropic-ai/tokenizer";
 
 const maxContentTokens = 1000;
 
@@ -17,6 +16,12 @@ const pc = new Pinecone({
   apiKey: process.env.PINECONE_API_KEY!,
 });
 const notesIndex = pc.Index("notes-gpt");
+
+function countTokens(text: string): number {
+  const words = text.split(/\s+/).filter(Boolean);
+  const newLines = (text.match(/\n/g) || []).length;
+  return words.length + newLines;
+}
 
 export async function POST(req: Request) {
   try {
