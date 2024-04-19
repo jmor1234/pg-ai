@@ -5,8 +5,13 @@ import LabelsGrid from "./_components/LabelsGrid";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PlusIcon, TagIcon } from "lucide-react";
+import { auth } from "@clerk/nextjs/server";
 
 const ManageLabels = async () => {
+  const { userId } = auth();
+  if (!userId) {
+    return null;
+  }
   const labels = await prisma.label.findMany();
   return (
     <div className='"h-full p-4 space-y-2 max-w-5xl mx-auto"'>

@@ -8,6 +8,7 @@ import SearchInput from "./_components/SearchInput";
 import Labels from "./_components/Labels";
 import NotesGrid from "./_components/NotesGrid";
 import { PlusIcon } from "lucide-react";
+import { auth, currentUser } from "@clerk/nextjs/server";
 
 interface NotesPageProps {
   searchParams: {
@@ -17,8 +18,13 @@ interface NotesPageProps {
 }
 
 const NotesPage = async ({ searchParams }: NotesPageProps) => {
+  const { userId } = auth();
+  if (!userId) {
+    return null;
+  }
   const data = await prisma.note.findMany({
     where: {
+      userId,
       labelId: searchParams.labelId,
       title: {
         search: searchParams.title,
