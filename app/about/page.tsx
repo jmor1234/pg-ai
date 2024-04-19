@@ -1,8 +1,16 @@
+import { Button } from "@/components/ui/button";
+import { HomeIcon } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 const AboutPage = () => {
   return (
-    <div className="p-8 max-w-prose">
+    <div className="mx-auto mt-8 max-w-prose">
+      <Button className="mb-4" asChild>
+        <Link href="/" className="flex items-center gap-2 justify-center">
+          Back to Home
+        </Link>
+      </Button>
       <h1 className="text-xl font-bold">PG-Context Application</h1>
 
       <h2 className="mt-4 text-lg font-semibold">First things first:</h2>
@@ -202,6 +210,11 @@ const AboutPage = () => {
           Pinecone Vector DB.
         </li>
       </ul>
+      <Button className="mb-4 mt-4" asChild>
+        <Link href="/" className="flex items-center gap-2 justify-center">
+          Back to Home
+        </Link>
+      </Button>
     </div>
   );
 };
