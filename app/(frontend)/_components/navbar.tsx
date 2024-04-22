@@ -45,7 +45,7 @@ const Navbar = () => {
       </Link>
       <Link href="/">
         <h1 className="text-xl md:text-2xl font-semibold tracking-tighter text-primary rounded-xl">
-          Context-PG
+          PG-Insights
         </h1>
       </Link>
       <Link

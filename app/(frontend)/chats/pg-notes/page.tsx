@@ -56,7 +56,7 @@ export default function NotesChatBox() {
     "Niche vs broad problem-solving when starting a company",
     "Should I be worried about others copying me?",
     "Why is curiosity so important?",
-    "What is really the key to building something valuable long term?"
+    "What is really the key to building something valuable long term?",
   ];
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -110,7 +110,8 @@ export default function NotesChatBox() {
       console.log("Chat saved to notes successfully.");
       toast({
         title: "Chat Saved",
-        description: "Your chat has been saved to your notes under the label Chat History.",
+        description:
+          "Your chat has been saved to your notes under the label Chat History.",
       });
     } else {
       console.error("Failed to save chat to notes.");
@@ -122,7 +123,7 @@ export default function NotesChatBox() {
   return (
     <div className="mx-auto flex max-w-4xl flex-col mt-16 py-10 border px-4 rounded-xl shadow-xl">
       <h1 className="text-2xl font-bold text-center text-muted-foreground mb-2">
-        Contextual PG
+        Interact with PG-Insights
       </h1>
       <div className="mx-auto max-w-3xl overflow-y-auto" ref={scrollRef}>
         {messages.map((message) => (
@@ -155,9 +156,16 @@ export default function NotesChatBox() {
           onChange={handleSelectChange}
           value={dropdownValue}
         >
-          <option value="default" className="">Common Questions & Conversation Starters</option>
+          <option value="default" className="">
+            Common Questions & Conversation Starters
+          </option>
           {kickStarters.map((prompt, index) => (
-            <option className="" key={index} value={prompt} style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>
+            <option
+              className=""
+              key={index}
+              value={prompt}
+              style={{ whiteSpace: "normal", wordBreak: "break-word" }}
+            >
               {prompt}
             </option>
           ))}
