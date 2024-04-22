@@ -19,13 +19,16 @@ async function insertLabels() {
           name: "Current Challenges",
         },
         {
+          name: "Long Term Goals",
+        },
+        {
           name: "Background",
         },
         {
           name: "Curiosities and Considerations",
         },
         {
-          name: "Long Term Goals",
+          name: "Other",
         },
       ],
     });

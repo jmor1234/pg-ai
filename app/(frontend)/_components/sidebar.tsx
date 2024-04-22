@@ -14,17 +14,7 @@ const SideBar = () => {
     {
       icon: NotebookIcon,
       href: '/notes/new',
-      label: '+ New'
-    },
-    {
-      icon: TagIcon,
-      href: '/labels/new',
-      label: '+ New'
-    },
-    {
-      icon: TagIcon,
-      href: '/labels',
-      label: 'Manage Labels'
+      label: '+ New Note'
     },
   ]
 

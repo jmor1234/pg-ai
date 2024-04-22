@@ -7,7 +7,7 @@ import React from "react";
 import MobileSidebar from "./mobile-sidebar";
 import { DarkMode } from "@/components/ui/DarkMode";
 import { Button } from "@/components/ui/button";
-import { NotebookIcon } from "lucide-react";
+import { HomeIcon, NotebookIcon } from "lucide-react";
 import { ChatBubbleIcon } from "@radix-ui/react-icons";
 import logo from "@/app/favicon.ico";
 import Image from "next/image";
@@ -30,7 +30,7 @@ const Navbar = () => {
             pathname === "/" && "text-primary bg-primary/10"
           )}
         >
-          <Image src={logo} alt="logo" width={40} height={40} />
+          <HomeIcon className="h-10 w-10 hover:bg-primary/10 transition rounded-xl p-2" />
         </Link>
       </div>
       <Link
