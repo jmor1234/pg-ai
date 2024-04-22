@@ -186,7 +186,7 @@ export default function NotesChatBox() {
         </div>
       </form>
       <div className=" my-1 max-w-[150px] sm:max-w-[200px] w-full mx-auto mt-2">
-        <div className="flex items-center justify-center md:gap-3 sm:gap-2">
+        <div className="flex items-center justify-center md:gap-3 sm:gap-2 gap-1">
           <AudioRecorder
             onTranscriptionComplete={handleTranscriptionComplete}
           />

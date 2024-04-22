@@ -1,6 +1,7 @@
 "use client"
 
 import { cn } from '@/lib/utils'
+import { ChatBubbleIcon } from '@radix-ui/react-icons'
 import { BotIcon, Home, NotebookIcon, Plus, PlusIcon, Settings, StickyNoteIcon, TagIcon } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
@@ -16,6 +17,11 @@ const SideBar = () => {
       href: '/notes/new',
       label: '+ New Note'
     },
+    {
+      icon: ChatBubbleIcon,
+      href: '/chats/pg-notes',
+      label: 'Chat'
+    }
   ]
 
   const onNavigate = (url: string) => {
