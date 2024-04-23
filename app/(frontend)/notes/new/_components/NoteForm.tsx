@@ -47,7 +47,7 @@ const NoteForm = ({ Labels, note }: NoteDialogProps) => {
 
   const onSubmit = async (data: CreateNoteType) => {
     // Use the provided default label ID for "No Label"
-    const defaultLabelId = '31a25385-8ab4-4b63-945b-06a62b713a12';
+    const defaultLabelId = '30c23426-3757-4f31-bed1-252b8afd6883';
 
     // Check if labelId is not provided and set it to default
     if (!data.labelId) {
