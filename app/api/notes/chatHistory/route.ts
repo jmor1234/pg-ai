@@ -1,7 +1,7 @@
 // app/api/notes/chatHistory/route.ts
 
 import { saveChatSchema } from "@/lib/validation/chatHistory";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import OpenAI from "openai";
 import { Pinecone } from "@pinecone-database/pinecone";
 import prisma from "@/lib/db/prismaSingelton";

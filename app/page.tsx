@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { auth, SignInButton, SignOutButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import React from "react";
+import { SignInButton, SignOutButton, UserButton } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 
 const HomePage = () => {
   const { userId } = auth();
@@ -21,7 +22,10 @@ const HomePage = () => {
           <p className="max-w-prose text-center">
             See the why and how of this application.
           </p>
-          <Button className="max-w-fit bg-secondary text-primary border border-primary/90"  asChild>
+          <Button
+            className="max-w-fit bg-secondary text-primary border border-primary/90"
+            asChild
+          >
             <Link href="/about">Why & How</Link>
           </Button>
         </div>

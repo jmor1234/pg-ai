@@ -3,7 +3,7 @@ import {
   updateLabelSchema,
   deleteLabelSchema,
 } from "@/lib/validation/label";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import prisma from "@/lib/db/prismaSingelton";
 import { metadata } from "@/app/layout";
 

@@ -4,7 +4,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import OpenAI from "openai";
 import { AnthropicStream, StreamingTextResponse } from "ai";
 import { Pinecone } from "@pinecone-database/pinecone";
-import { auth, currentUser } from "@clerk/nextjs";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import prisma from "@/lib/db/prismaSingelton";
 
 function countTokens(text: string): number {
