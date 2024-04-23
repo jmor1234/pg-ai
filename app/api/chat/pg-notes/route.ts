@@ -55,12 +55,12 @@ export async function POST(req: Request) {
 
     const [pgQueryResponse, notesQueryResponse] = await Promise.all([
       pgIndex.query({
-        topK: 5,
+        topK: 6,
         vector: embedding,
         includeMetadata: true,
       }),
       notesIndex.query({
-        topK: 5,
+        topK: 6,
         vector: embedding,
         filter: { userId: userId },
       }),
