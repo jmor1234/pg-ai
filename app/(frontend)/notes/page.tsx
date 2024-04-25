@@ -40,14 +40,6 @@ const NotesPage = async ({ searchParams }: NotesPageProps) => {
     <div className="h-full p-4 space-y-2 max-w-5xl mx-auto">
       <SearchInput />
       <Labels data={labels} />
-      <div className="flex justify-center"> 
-        <Button size="sm" asChild className="">
-          <Link href="/notes/new">
-            <PlusIcon className="w-4 h-4 mr-1" />
-            Create New Note
-          </Link>
-        </Button>
-      </div>
       <NotesGrid notes={data} labels={labels} />
     </div>
   );

@@ -4,7 +4,7 @@
 
 import { cn } from "@/lib/utils";
 import { useChat } from "ai/react";
-import { Bot, Trash } from "lucide-react";
+import { ArrowUp, ArrowUpNarrowWide, Bot, Trash } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Message } from "ai";
@@ -121,8 +121,8 @@ export default function NotesChatBox() {
   };
 
   return (
-    <div className="mx-auto flex max-w-4xl flex-col mt-16 py-10 border px-4 rounded-xl shadow-xl">
-      <h1 className="text-2xl font-bold text-center text-muted-foreground mb-2">
+    <div className="mx-auto flex max-w-4xl flex-col mt-16 py-10 border px-4 rounded-xl shadow-xl bg-background">
+      <h1 className="text-2xl font-bold text-center text-foreground mb-4">
         Interact with PG-Insights
       </h1>
       <div className="mx-auto max-w-3xl overflow-y-auto" ref={scrollRef}>
@@ -149,10 +149,10 @@ export default function NotesChatBox() {
       </div>
       <form
         onSubmit={handleSubmit}
-        className="mt-4 flex flex-col items-center justify-center gap-2"
+        className="mt-6 flex flex-col items-center justify-center gap-4"
       >
         <select
-          className="rounded-lg text-sm text-muted-foreground mt-2 text-center py-1 px-2 w-full max-w-[500px]"
+          className="rounded-lg text-sm text-muted-foreground py-2 px-4 w-full max-w-md border border-border focus:outline-none focus:ring-2 focus:ring-primary"
           onChange={handleSelectChange}
           value={dropdownValue}
         >
@@ -172,7 +172,7 @@ export default function NotesChatBox() {
         </select>
         <div className="flex items-center justify-center gap-2 w-full">
           <textarea
-            className="max-w-prose whitespace-pre-wrap rounded-xl border px-3 py-2 text-sm shadow-md flex-grow"
+            className="max-w-prose whitespace-pre-wrap rounded-xl border px-4 py-2 text-sm shadow-md flex-grow focus:outline-none focus:ring-2 focus:ring-primary"
             placeholder="What are you curious about at the moment?"
             value={input}
             onChange={handleInputChange}
@@ -188,13 +188,13 @@ export default function NotesChatBox() {
               }
             }}
           />
-          <Button className="" type="submit" size="sm">
+          <Button className="bg-primary text-primary-foreground" type="submit" size="sm">
             Send
           </Button>
         </div>
       </form>
-      <div className=" my-1 max-w-[150px] sm:max-w-[200px] w-full mx-auto mt-2">
-        <div className="flex items-center justify-center md:gap-3 sm:gap-2 gap-1">
+      <div className="mt-4 max-w-md w-full mx-auto">
+        <div className="flex items-center justify-center gap-4">
           <AudioRecorder
             onTranscriptionComplete={handleTranscriptionComplete}
           />
@@ -202,8 +202,8 @@ export default function NotesChatBox() {
             title="Clear Chat"
             type="button"
             size="sm"
-            variant="destructive"
-            className="opacity-70 hover:opacity-100"
+            variant="outline"
+            className="text-muted-foreground border-border hover:bg-muted"
             onClick={() => setMessages([])}
           >
             Clear Chat
@@ -213,9 +213,9 @@ export default function NotesChatBox() {
             variant="outline"
             type="button"
             size="sm"
-            className=""
+            className="text-primary border-primary hover:bg-primary/10"
             onClick={handleSaveChat}
-            disabled={isSaving} // Disable button when saving
+            disabled={isSaving}
           >
             {isSaving ? "Saving..." : "Save This Interaction"}
           </Button>
@@ -235,28 +235,29 @@ function ChatMessage({
   return (
     <div
       className={cn(
-        "mb-3 flex items-center",
-        isAiMessage ? "me-5 justify-start" : "ms-5 justify-end"
+        "mb-4 flex items-start",
+        isAiMessage ? "justify-start" : "justify-end"
       )}
     >
-      {isAiMessage && <Bot className="mr-2 shrink-0" size={20} />}
-      <p
+      {isAiMessage && <Bot className="mr-2 shrink-0 text-primary" size={24} />}
+      <div
         className={cn(
-          "whitespace-pre-line max-w-prose rounded-xl border px-3 py-2 text-sm shadow-md",
-          isAiMessage ? "bg-primary/10" : "bg-primary text-primary-foreground"
+          "whitespace-pre-line max-w-prose rounded-xl border px-4 py-2 text-sm shadow-md",
+          isAiMessage ? "bg-primary/10 text-foreground" : "bg-primary text-primary-foreground"
         )}
       >
         {content}
-      </p>
+      </div>
       {!isAiMessage && user?.imageUrl && (
         <Image
           src={user.imageUrl}
           alt="User Image"
-          width={40}
-          height={40}
+          width={32}
+          height={32}
           className="ml-2 rounded-full"
         />
       )}
     </div>
   );
 }
+

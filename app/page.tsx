@@ -42,12 +42,11 @@ const HomePage = () => {
       <div className="flex flex-col my-2 gap-4">
         <div className="flex flex-col items-center justify-center my-1 gap-2">
           <p className="max-w-prose text-center">
-            Create notes to enhance the contextual relevance of your interaction{" "}
-            <br></br>
-            and insights when conversing with the AI Assistant.
+            This Chat History will be used on all subsequent conversations, <br></br>
+            when contextually relevant.
           </p>
           <Button className="max-w-fit border border-primary/50" asChild>
-            <Link href="/notes">See Your Notes</Link>
+            <Link href="/notes">See Your Chat History</Link>
           </Button>
         </div>
       </div>

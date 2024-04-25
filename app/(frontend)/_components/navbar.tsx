@@ -41,7 +41,7 @@ const Navbar = () => {
         )}
       >
         <NotebookIcon className="h-5 w-5 inline-block mb-1" />
-        <span className="hidden md:block">Notes</span>
+        <span className="hidden md:block">Chat History</span>
       </Link>
       <Link href="/">
         <h1 className="text-xl md:text-2xl font-semibold tracking-tighter text-primary rounded-xl">
