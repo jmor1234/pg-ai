@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import Provider from "@/components/ui/Provider";
 import { Toaster } from "@/components/ui/toaster"
+import { ProModal } from "@/components/pro-modal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,6 +19,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
@@ -29,6 +31,7 @@ export default function RootLayout({
               enableSystem={true}
               disableTransitionOnChange={true}
             >
+              <ProModal />
               {children}
             </ThemeProvider>
             <Toaster />

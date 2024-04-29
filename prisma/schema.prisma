@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
@@ -10,18 +10,27 @@ datasource db {
 }
 
 model Label {
-  id      String   @id @default(uuid())
-  name    String
-  notes   Note[]   @relation("NoteToLabel")
+  id    String @id @default(uuid())
+  name  String
+  notes Note[] @relation("NoteToLabel")
 }
 
 model Note {
   id        String   @id @default(uuid())
-  title     String 
+  title     String
   content   String
   userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   labelId   String?  @map("label_id")
   label     Label?   @relation("NoteToLabel", fields: [labelId], references: [id])
+}
+
+model UserSubscription {
+  id                     String    @id @default(uuid())
+  userId                 String    @unique
+  stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
+  stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
+  stripePriceId          String?   @unique @map(name: "stripe_price_id")
+  stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
 }

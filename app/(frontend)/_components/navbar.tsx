@@ -7,14 +7,20 @@ import React from "react";
 import MobileSidebar from "./mobile-sidebar";
 import { DarkMode } from "@/components/ui/DarkMode";
 import { Button } from "@/components/ui/button";
-import { HomeIcon, NotebookIcon } from "lucide-react";
+import { HomeIcon, NotebookIcon, Sparkle } from "lucide-react";
 import { ChatBubbleIcon } from "@radix-ui/react-icons";
 import logo from "@/app/favicon.ico";
 import Image from "next/image";
 import { cn } from "@/lib/utils"; // Assuming you have a similar utility for classNames
+import { useProModal } from "@/hooks/use-pro-modal";
 
-const Navbar = () => {
+interface NavbarProps {
+  isPro: boolean;
+}
+
+const Navbar = ({ isPro }: NavbarProps) => {
   const pathname = usePathname();
+  const proModal = useProModal();
 
   return (
     <div
@@ -59,6 +65,11 @@ const Navbar = () => {
         <span className="hidden md:block">Chat</span>
       </Link>
       <div className="flex items-center gap-x-3">
+        {!isPro && (
+          <Button onClick={proModal.onOpen}>
+            Upgrade <Sparkle className="h-5 w-5 inline-block ml-1" />
+          </Button>
+        )}
         <DarkMode />
         <UserButton />
       </div>
