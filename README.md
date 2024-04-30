@@ -1,5 +1,3 @@
-PG-Insights application: pg-insights.com
-
 **First things first:**
 This application is **NOT** a replacement for individually reading all of Paul's Essays. Reading every single word Paul has written is highly recommended.
 

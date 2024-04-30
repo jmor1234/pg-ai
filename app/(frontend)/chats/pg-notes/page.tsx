@@ -120,6 +120,32 @@ export default function NotesChatBox() {
     setIsSaving(false); // Reset loading state after the request
   };
 
+  /*
+  useEffect(() => {
+    if (messages.length > 3) {
+      const lastMessage = messages[messages.length - 1];
+      if (lastMessage.role === "assistant" && lastMessage.content === "To continue this conversation, please upgrade to Pro.") {
+        console.log("Received upgrade prompt from the backend.");
+      } else {
+        const fetchMessage = async () => {
+          const response = await fetch(`/api/chat/pg-notes`, {
+            method: 'POST', // Change to POST
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ messages }) // Ensure to send the necessary data
+          });
+          if (response.status === 403) {
+            const data = await response.json();
+            setMessages([...messages, data.assistantMessage]);
+          }
+        };
+        fetchMessage();
+      }
+    }
+  }, [messages, setMessages]);
+  */
+
   return (
     <div className="mx-auto flex max-w-4xl flex-col mt-16 py-10 border px-4 rounded-xl shadow-xl bg-background">
       <h1 className="text-2xl font-bold text-center text-foreground mb-4">
@@ -260,4 +286,3 @@ function ChatMessage({
     </div>
   );
 }
-

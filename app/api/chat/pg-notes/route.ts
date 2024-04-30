@@ -6,6 +6,7 @@ import { AnthropicStream, StreamingTextResponse } from "ai";
 import { Pinecone } from "@pinecone-database/pinecone";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import prisma from "@/lib/db/prismaSingelton";
+import { checkSubscription } from "@/lib/subscription";
 
 function countTokens(text: string): number {
   const words = text.split(/\s+/).filter(Boolean);
@@ -23,9 +24,22 @@ export async function POST(req: Request) {
     });
     const pgIndex = pc.Index("pg-chunks");
     const notesIndex = pc.Index("notes-gpt");
+    const { userId } = auth();
 
     const { messages } = await req.json();
     console.log(`Received ${messages.length} messages. Processing messages...`);
+
+    // const isPro = await checkSubscription();
+    
+    // if (messages.length > 3 && !isPro) {
+    //   return new Response(JSON.stringify({
+    //     assistantMessage: {
+    //       role: "assistant",
+    //       content: "To continue this conversation, please upgrade to Pro."
+    //     }
+    //   }), { status: 403 });
+    // }
+
     const recentMessages = messages.slice(-10);
     console.log(
       "Recent messages: ",
@@ -47,7 +61,6 @@ export async function POST(req: Request) {
     console.log("Embedding created. Querying the Pinecone indexes...");
     const embedding = recentMessagesEmbedding.data[0].embedding;
 
-    const { userId } = auth();
     const user = await currentUser();
     const firstName = user?.firstName || "User has not provided their name yet";
 
@@ -127,6 +140,8 @@ Content: ${note.content}`
   )
   .join(`\n\n`)}
 </userContext>
+The current date is ${currentDate} and the time is ${currentTime}.
+The user's first name is ${firstName}.
 
 <instructions>
 - Engage the user in a natural, free-flowing, empathetic, and curious-minded conversation driven by their questions, thoughts, and insights related to Paul Graham's essays.
@@ -151,7 +166,7 @@ Content: ${note.content}`
     console.log(`Messages: ${JSON.stringify(messages, null, 2)}`);
 
     const response = await anthropic.messages.create({
-      model: "claude-3-sonnet-20240229",
+      model: "claude-3-opus-20240229",
       stream: true,
       system: systemMessage,
       messages,
