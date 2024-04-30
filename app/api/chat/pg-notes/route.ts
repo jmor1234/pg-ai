@@ -166,7 +166,7 @@ The user's first name is ${firstName}.
     console.log(`Messages: ${JSON.stringify(messages, null, 2)}`);
 
     const response = await anthropic.messages.create({
-      model: "claude-3-opus-20240229",
+      model: "claude-3-sonnet-20240229",
       stream: true,
       system: systemMessage,
       messages,
