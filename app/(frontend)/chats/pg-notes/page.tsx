@@ -80,7 +80,7 @@ export default function NotesChatBox() {
     handleInputChange(syntheticEvent);
   };
 
-  const handleSaveChat = async () => {
+  const handleConversationDistillation = async () => {
     setIsSaving(true); // Set loading state before the request
     const currentConversation = messages
       .map((msg) => `${msg.role}: ${msg.content}`)
@@ -98,7 +98,7 @@ export default function NotesChatBox() {
       label: "Chat History",
     };
 
-    const response = await fetch("/api/notes/chatHistory", {
+    const response = await fetch("/api/notes/memory", {  // Updated endpoint
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -114,7 +114,12 @@ export default function NotesChatBox() {
           "Your chat has been saved to your notes under the label Chat History.",
       });
     } else {
-      console.error("Failed to save chat to notes.");
+      const errorData = await response.json(); // Parse error message
+      console.error("Failed to save chat to notes:", errorData.error);
+      toast({
+        title: "Error Saving Chat",
+        description: errorData.error || "An unexpected error occurred.",
+      });
     }
     router.refresh();
     setIsSaving(false); // Reset loading state after the request
@@ -240,7 +245,7 @@ export default function NotesChatBox() {
             type="button"
             size="sm"
             className="text-primary border-primary hover:bg-primary/10"
-            onClick={handleSaveChat}
+            onClick={handleConversationDistillation}
             disabled={isSaving}
           >
             {isSaving ? "Saving..." : "Save This Interaction"}
