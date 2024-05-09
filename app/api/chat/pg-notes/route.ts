@@ -29,17 +29,6 @@ export async function POST(req: Request) {
     const { messages } = await req.json();
     console.log(`Received ${messages.length} messages. Processing messages...`);
 
-    // const isPro = await checkSubscription();
-
-    // if (messages.length > 3 && !isPro) {
-    //   return new Response(JSON.stringify({
-    //     assistantMessage: {
-    //       role: "assistant",
-    //       content: "To continue this conversation, please upgrade to Pro."
-    //     }
-    //   }), { status: 403 });
-    // }
-
     const recentMessages = messages.slice(-10);
     console.log(
       "Recent messages: ",
@@ -171,7 +160,7 @@ export async function POST(req: Request) {
       system: systemMessage,
       messages,
       max_tokens: 4000,
-      temperature: 0.5,
+      temperature: 0.7,
     });
     const stream = AnthropicStream(response);
     console.log("Chat completion generated. Streaming response...");
