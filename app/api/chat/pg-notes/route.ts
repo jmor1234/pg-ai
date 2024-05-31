@@ -1,8 +1,9 @@
 // app/api/chat/pg-notes/route.ts
 
 import Anthropic from "@anthropic-ai/sdk";
+import { anthropic as aiSdkAnthropic } from "@ai-sdk/anthropic";
 import OpenAI from "openai";
-import { AnthropicStream, StreamingTextResponse } from "ai";
+import { streamText } from "ai";
 import { Pinecone } from "@pinecone-database/pinecone";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import prisma from "@/lib/db/prismaSingelton";
@@ -153,17 +154,16 @@ export async function POST(req: Request) {
     console.log(`System Message: ${systemMessage}`);
     console.log(`Messages: ${JSON.stringify(messages, null, 2)}`);
 
-    const response = await anthropic.messages.create({
-      model: "claude-3-opus-20240229",
-      stream: true,
+    const response = await streamText({
+      model: aiSdkAnthropic("claude-3-sonnet-20240229"),
       system: systemMessage,
       messages,
-      max_tokens: 4000,
+      maxTokens: 4000,
       temperature: 0.7,
     });
-    const stream = AnthropicStream(response);
-    console.log("Chat completion generated. Streaming response...");
-    return new StreamingTextResponse(stream);
+
+    return response.toAIStreamResponse();
+
   } catch (error) {
     console.error(error);
     return Response.json({ error: "Internal server error" }, { status: 500 });
