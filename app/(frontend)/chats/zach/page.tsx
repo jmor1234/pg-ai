@@ -36,16 +36,30 @@ export default function NotesChatBox() {
   const router = useRouter();
 
   const kickStarters = [
-    "What is the best way to learn about Zach?",
-    "What is Zach's favorite book?",
-    "What is Zach's favorite movie?",
-    "What is Zach's favorite song?",
-    "What is Zach's favorite food?",
-    "What is Zach's favorite drink?",
-    "What is Zach's favorite color?",
-    "What is Zach's favorite animal?",
-    "What is Zach's favorite food?",
-    "What is Zach's favorite drink?",
+    "What is Zach's full name?",
+    "How old is Zach?",
+    "What is Zach's height?",
+    "What is Zach's hair color?",
+    "What is Zach's ethnicity?",
+    "Where did Zach grow up?",
+    "In what town and state is Altamont located?",
+    "What two sports did Zach grow up playing?",
+    "Which NBA team is Zach a big fan of?",
+    "Who are the Celtics playing against in the NBA Finals right now?",
+    "Which MLB team is Zach a big fan of?",
+    "Where did Zach play baseball?",
+    "What baseball achievement did Zach attain?",
+    "What is Zach known for in basketball?",
+    "How does Zach's height advantage help him in basketball?",
+    "In which grade did Zach play JV Basketball?",
+    "Who was Zach's JV Basketball coach?",
+    "What elementary school did Zach attend?",
+    "What middle school did Zach attend?",
+    "What high school did Zach attend?",
+    "What has Zach created through years of hard work and strategic execution?",
+    "What does Zach sell to his clients in his side business?",
+    "Is Zach considering a career change for his primary professional day job?",
+    "What is Zach doing before pursuing a new career path?",
   ];
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -87,7 +101,8 @@ export default function NotesChatBox() {
       label: "Chat History",
     };
 
-    const response = await fetch("/api/notes/memory", {  // Updated endpoint
+    const response = await fetch("/api/notes/memory", {
+      // Updated endpoint
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -182,7 +197,11 @@ export default function NotesChatBox() {
               }
             }}
           />
-          <Button className="bg-primary text-primary-foreground" type="submit" size="sm">
+          <Button
+            className="bg-primary text-primary-foreground"
+            type="submit"
+            size="sm"
+          >
             Send
           </Button>
         </div>
@@ -237,7 +256,9 @@ function ChatMessage({
       <div
         className={cn(
           "whitespace-pre-line max-w-prose rounded-xl border px-4 py-2 text-sm shadow-md",
-          isAiMessage ? "bg-primary/10 text-foreground" : "bg-primary text-primary-foreground"
+          isAiMessage
+            ? "bg-primary/10 text-foreground"
+            : "bg-primary text-primary-foreground"
         )}
       >
         {content}
