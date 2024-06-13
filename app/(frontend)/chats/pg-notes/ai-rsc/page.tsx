@@ -9,11 +9,63 @@ import { nanoid } from "nanoid";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { BotIcon, UserIcon } from "lucide-react";
+import { SaveChatType } from "@/lib/validation/chatHistory";
+import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [input, setInput] = useState<string>("");
   const [messages, setMessages] = useUIState();
   const { chatServerAction } = useActions();
+  const [isSaving, setIsSaving] = useState(false);
+  const { toast } = useToast();
+  const router = useRouter();
+
+  const handleConversationDistillation = async () => {
+    setIsSaving(true); // Set loading state before the request
+    const currentConversation = messages
+      .map((msg: ClientMessage) => `${msg.role}: ${msg.display}`)
+      .join("\n\n");
+    const chatData: SaveChatType = {
+      title: `Chat on ${new Date().toLocaleString("en-US", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      })}`,
+      content: currentConversation,
+      label: "Chat History",
+    };
+
+    const response = await fetch("/api/notes/memory", {
+      // Updated endpoint
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(chatData),
+    });
+
+    if (response.ok) {
+      console.log("Chat saved to notes successfully.");
+      toast({
+        title: "Chat Saved",
+        description:
+          "Your chat has been saved to your notes under the label Chat History.",
+      });
+    } else {
+      const errorData = await response.json(); // Parse error message
+      console.error("Failed to save chat to notes:", errorData.error);
+      toast({
+        title: "Error Saving Chat",
+        description: errorData.error || "An unexpected error occurred.",
+      });
+    }
+    router.refresh();
+    setIsSaving(false); // Reset loading state after the request
+  };
 
   return (
     <div className="flex flex-col max-w-3xl mx-auto p-6 mt-10">
@@ -79,12 +131,26 @@ export default function Home() {
             placeholder="Type your message..."
             className="flex-1 rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500"
           />
-          <Button type="submit" variant="default" className="ml-4 bg-primary text-primary-foreground">
+          <Button
+            type="submit"
+            variant="default"
+            className="ml-4 bg-primary text-primary-foreground"
+          >
             Send
+          </Button>
+          <Button
+            title="Save Chat to Notes"
+            variant="outline"
+            type="button"
+            size="sm"
+            className="text-primary border-primary hover:bg-primary/10"
+            onClick={handleConversationDistillation}
+            disabled={isSaving}
+          >
+            {isSaving ? "Saving..." : "Save"}
           </Button>
         </form>
       </div>
     </div>
   );
 }
-

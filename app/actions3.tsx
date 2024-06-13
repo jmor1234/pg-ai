@@ -3,7 +3,7 @@
 "use server";
 
 import { createAI, getMutableAIState, streamUI } from "ai/rsc";
-import { openai as sdkOpenAI } from "@ai-sdk/openai";
+import { openai } from "@ai-sdk/openai";
 import { ReactNode } from "react";
 import { z } from "zod";
 import { nanoid } from "nanoid";
@@ -12,11 +12,6 @@ import Markdown from "react-markdown";
 import Image from "next/image";
 import Link from "next/link";
 import { generateText } from "ai";
-import prisma from "@/lib/db/prismaSingelton";
-import { anthropic } from "@ai-sdk/anthropic";
-import { auth, currentUser } from "@clerk/nextjs/server";
-import { Pinecone } from "@pinecone-database/pinecone";
-import { OpenAI } from "openai";
 
 const exa = new Exa(process.env.EXA_API_KEY);
 
@@ -36,87 +31,9 @@ export async function chatServerAction(input: string): Promise<ClientMessage> {
 
   const chatHistory = getMutableAIState();
 
-  //retrieve user-specific context
-  const { userId } = auth();
-  const user = await currentUser();
-  const firstName = user?.firstName || "User has not provided their name yet.";
-
-  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
-  const pc = new Pinecone({
-    apiKey: process.env.PINECONE_API_KEY!,
-  });
-  const memoryIndex = pc.Index("notes-gpt");
-
-  const recentMessages = chatHistory.get().slice(-10);
-  const recentMessagesEmbedding = await openai.embeddings.create({
-    model: "text-embedding-ada-002",
-    input: recentMessages
-      .map((message: { role: string; content: string }) => {
-        return message.role + ": " + message.content + "\n";
-      })
-      .join("\n"),
-  });
-
-  const embedding = recentMessagesEmbedding.data[0].embedding;
-
-  const queryMemoryIndex = await memoryIndex.query({
-    topK: 5,
-    vector: embedding,
-    filter: {
-      userId: userId,
-    },
-  });
-
-  const contextualMemory = await prisma.note.findMany({
-    where: {
-      id: { in: queryMemoryIndex.matches.map((match: any) => match.id) },
-    },
-    include: {
-      label: true,
-    },
-  });
-
-  const currentDate = new Date().toLocaleDateString("en-US");
-  const currentTime = new Date().toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-    hour12: true,
-  });
-
-  const coreSystemMessage = `
-  <role>
-  Provide a friendly empathetic interaction with the user.
-  Leverage the insights that are provided to you within the user context tags about the user for a contextually relevant response.
-  You also have access to a web search tool called exaSearch that you can use to get information from the web.
-  You can use the exaSearch tool to get information from the web and contextualize it into your response.
-  <role>
-
-  <userContext>
-  The current date is ${currentDate} and the time is ${currentTime}.
-  The user's first name is ${firstName}.
-
-  ${contextualMemory
-    .map(
-      (memory) => `
-  Date Of Information: ${memory.title}
-  Information about the user from previous conversations: ${memory.content}
-  `
-    )
-    .join("\n\n")}
-  </userContext>
-
-
-  <instructions>
-  - Based on the current conversation with the user and the user context that is provided to you, return a contextually relevant response.
-  - If the user asks for a web search, use the exaSearch tool to get information from the web and contextualize it into your response.
-  </instructions>
-  `;
-
-  console.log(`coreSystemMessage: ${coreSystemMessage}`);
-
-  const coreResponse = await streamUI({
-    model: sdkOpenAI("gpt-4o"),
-    system: coreSystemMessage,
+  const modelResponse = await streamUI({
+    model: openai("gpt-4o"),
+    system: "You are a helpful AI assistant. When you deem necessary, you can use the exaSearch tool to search the web for relevant information.",
     messages: [
       ...chatHistory.get(),
       {
@@ -153,14 +70,10 @@ export async function chatServerAction(input: string): Promise<ClientMessage> {
           "When the user deliberately asks for a web search or when you deem the context of the recent message or conversation would benefit from retrieving information from the web, use this tool to do so.",
         parameters: z.object({
           conversation: z.array(
-            z
-              .object({
-                role: z.enum(["user", "assistant"]),
-                content: z.string(),
-              })
-              .describe(
-                "This is the entire array of messages from the user and assistant from the conversation so far."
-              )
+            z.object({
+              role: z.enum(["user", "assistant"]),
+              content: z.string(),
+            }).describe("This is the entire array of messages from the user and assistant from the conversation so far.")
           ),
         }),
         generate: async function* ({ conversation }) {
@@ -187,7 +100,7 @@ export async function chatServerAction(input: string): Promise<ClientMessage> {
           });
 
           // Introduce a delay before showing the next step
-          await new Promise((resolve) => setTimeout(resolve, 3000));
+          await new Promise(resolve => setTimeout(resolve, 3000));
 
           yield (
             <div className="animate-pulse p-4 bg-primary/10 rounded-md">
@@ -196,7 +109,7 @@ export async function chatServerAction(input: string): Promise<ClientMessage> {
           );
 
           // Introduce another delay before finalizing the response
-          await new Promise((resolve) => setTimeout(resolve, 2000));
+          await new Promise(resolve => setTimeout(resolve, 2000));
 
           const exaDataForPrompt = searchResponse.results
             .map((result) => {
@@ -245,16 +158,10 @@ export async function chatServerAction(input: string): Promise<ClientMessage> {
             </div>
           );
 
-          console.log(
-            `Conversation for system prompt: ${JSON.stringify(
-              conversation,
-              null,
-              2
-            )}`
-          );
+          console.log(`Conversation for system prompt: ${JSON.stringify(conversation, null, 2)}`);
 
           const result = await generateText({
-            model: sdkOpenAI("gpt-4o"),
+            model: openai("gpt-4o"),
             system: systemMessage,
             messages: conversation,
           });
@@ -268,13 +175,13 @@ export async function chatServerAction(input: string): Promise<ClientMessage> {
           ]);
           return (
             <Markdown
-              components={{
-                p: ({ children }) => <p className="py-2">{children}</p>,
-                h1: ({ children }) => (
-                  <h1 className="text-2xl font-bold my-4">{children}</h1>
-                ),
-              }}
-            >
+            components={{
+              p: ({ children }) => <p className="py-2">{children}</p>,
+              h1: ({ children }) => (
+                <h1 className="text-2xl font-bold my-4">{children}</h1>
+              ),
+            }}
+          >
               {result.text}
             </Markdown>
           );
@@ -285,7 +192,7 @@ export async function chatServerAction(input: string): Promise<ClientMessage> {
   return {
     id: nanoid(),
     role: "assistant",
-    display: coreResponse.value,
+    display: modelResponse.value,
   };
 }
 
@@ -301,7 +208,7 @@ async function generateExaQuery(
   conversation: ServerMessage[]
 ): Promise<string> {
   const { text: exaQuery } = await generateText({
-    model: sdkOpenAI("gpt-4o"),
+    model: openai("gpt-4o"),
     system: `You are a helpful assistant that generates an optimized Exa query based on a conversation between a user and an assistant. 
       The query should be relevant to the conversation and follow the guidelines for constructing an effective Exa query.
 
@@ -334,7 +241,7 @@ async function generateHighlightQuery(
   exaQuery: string
 ): Promise<string> {
   const { text: highlightQuery } = await generateText({
-    model: sdkOpenAI("gpt-4o"),
+    model: openai("gpt-4o"),
     system: `You are a helpful assistant that generates a highlight query for the Exa API based on a conversation between a user and an assistant, and an initial Exa query. 
     Here is the initial Exa query: ${exaQuery}
 
@@ -362,3 +269,5 @@ async function generateHighlightQuery(
   console.log(`highlightQuery: ${highlightQuery}`);
   return highlightQuery;
 }
+
+
