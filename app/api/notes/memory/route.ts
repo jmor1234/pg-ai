@@ -8,6 +8,7 @@ import { generateText, generateObject } from "ai";
 import { openai as sdkOpenAI } from "@ai-sdk/openai";
 import { Pinecone } from "@pinecone-database/pinecone";
 import { z } from "zod";
+import { anthropic as sdkAnthropic } from "@ai-sdk/anthropic";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
 
@@ -16,7 +17,7 @@ const pc = new Pinecone({
 });
 const chatHistoryIndex = pc.Index("notes-gpt");
 
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
+const nonSdkAnthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
 
 export async function POST(req: Request) {
   try {
@@ -146,8 +147,8 @@ assistant: [assistant response]
       };
     }
 
-    const response = await anthropic.messages.create({
-      model: "claude-3-haiku-20240307",
+    const response = await nonSdkAnthropic.messages.create({
+      model: "claude-3-5-sonnet-20240620",
       system: systemMessage,
       messages: [
         userMessage,
@@ -163,7 +164,7 @@ assistant: [assistant response]
     const conversationDistillation = response.content[0].text;
 
     const createNoteBoolean = await generateObject({
-      model: sdkOpenAI("gpt-4-turbo-2024-04-09"),
+      model: sdkAnthropic("claude-3-5-sonnet-20240620"),
       schema: z.object({
         thoughtProcess: z.string().describe("The thought process that you went through to determine if there is new valuable information to create a new note from or not."),
         newValuableInformation: z.boolean().describe("True or False based on if there is new valuable information to create a new note from or not."),

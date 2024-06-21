@@ -13,7 +13,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { generateText } from "ai";
 import prisma from "@/lib/db/prismaSingelton";
-import { anthropic } from "@ai-sdk/anthropic";
+import { anthropic as sdkAnthropic } from "@ai-sdk/anthropic";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { Pinecone } from "@pinecone-database/pinecone";
 import { OpenAI } from "openai";
@@ -178,11 +178,11 @@ export async function chatServerAction(input: string): Promise<ClientMessage> {
             exaQuery
           );
           const searchResponse = await exa.searchAndContents(exaQuery, {
-            numResults: 2,
+            numResults: 5,
             useAutoprompt: true,
             highlights: {
               query: highlightQuery,
-              highlightsPerUrl: 2,
+              highlightsPerUrl: 3,
             },
           });
 
@@ -254,7 +254,7 @@ export async function chatServerAction(input: string): Promise<ClientMessage> {
           );
 
           const result = await generateText({
-            model: sdkOpenAI("gpt-4o"),
+            model: sdkAnthropic("claude-3-5-sonnet-20240620"),
             system: systemMessage,
             messages: conversation,
           });
@@ -301,7 +301,7 @@ async function generateExaQuery(
   conversation: ServerMessage[]
 ): Promise<string> {
   const { text: exaQuery } = await generateText({
-    model: sdkOpenAI("gpt-4o"),
+    model: sdkAnthropic("claude-3-5-sonnet-20240620"),
     system: `You are a helpful assistant that generates an optimized Exa query based on a conversation between a user and an assistant. 
       The query should be relevant to the conversation and follow the guidelines for constructing an effective Exa query.
 
@@ -334,7 +334,7 @@ async function generateHighlightQuery(
   exaQuery: string
 ): Promise<string> {
   const { text: highlightQuery } = await generateText({
-    model: sdkOpenAI("gpt-4o"),
+    model: sdkAnthropic("claude-3-5-sonnet-20240620"),
     system: `You are a helpful assistant that generates a highlight query for the Exa API based on a conversation between a user and an assistant, and an initial Exa query. 
     Here is the initial Exa query: ${exaQuery}
 
@@ -362,3 +362,4 @@ async function generateHighlightQuery(
   console.log(`highlightQuery: ${highlightQuery}`);
   return highlightQuery;
 }
+
