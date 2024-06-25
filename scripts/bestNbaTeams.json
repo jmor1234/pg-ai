@@ -1,0 +1,62 @@
+[
+    {
+      "teamName": "1995-96 Chicago Bulls",
+      "year": 1996,
+      "bestPlayer": "Michael Jordan",
+      "record": "72-10"
+    },
+    {
+      "teamName": "2015-16 Golden State Warriors",
+      "year": 2016,
+      "bestPlayer": "Stephen Curry",
+      "record": "73-9"
+    },
+    {
+      "teamName": "1971-72 Los Angeles Lakers",
+      "year": 1972,
+      "bestPlayer": "Wilt Chamberlain",
+      "record": "69-13"
+    },
+    {
+      "teamName": "1996-97 Chicago Bulls",
+      "year": 1997,
+      "bestPlayer": "Michael Jordan",
+      "record": "69-13"
+    },
+    {
+      "teamName": "2016-17 Golden State Warriors",
+      "year": 2017,
+      "bestPlayer": "Kevin Durant",
+      "record": "67-15"
+    },
+    {
+      "teamName": "1985-86 Boston Celtics",
+      "year": 1986,
+      "bestPlayer": "Larry Bird",
+      "record": "67-15"
+    },
+    {
+      "teamName": "1966-67 Philadelphia 76ers",
+      "year": 1967,
+      "bestPlayer": "Wilt Chamberlain",
+      "record": "68-13"
+    },
+    {
+      "teamName": "1972-73 Boston Celtics",
+      "year": 1973,
+      "bestPlayer": "John Havlicek",
+      "record": "68-14"
+    },
+    {
+      "teamName": "2012-13 Miami Heat",
+      "year": 2013,
+      "bestPlayer": "LeBron James",
+      "record": "66-16"
+    },
+    {
+      "teamName": "1991-92 Chicago Bulls",
+      "year": 1992,
+      "bestPlayer": "Michael Jordan",
+      "record": "67-15"
+    }
+  ]

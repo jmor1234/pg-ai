@@ -7,12 +7,20 @@ import { streamText } from "ai";
 import { Pinecone } from "@pinecone-database/pinecone";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import prisma from "@/lib/db/prismaSingelton";
+import fs from 'fs';
+import path from 'path';
 
 function countTokens(text: string): number {
   const words = text.split(/\s+/).filter(Boolean);
   const newLines = (text.match(/\n/g) || []).length;
   return words.length + newLines;
 }
+
+// function readJsonFile(filePath: string) {
+//   const fullPath = path.join(process.cwd(), filePath);
+//   const fileContents = fs.readFileSync(fullPath, 'utf8');
+//   return JSON.parse(fileContents);
+// }
 
 export async function POST(req: Request) {
   try {
@@ -98,6 +106,13 @@ export async function POST(req: Request) {
       minute: "numeric",
       hour12: true,
     });
+
+    // const bestNbaTeams = readJsonFile('scripts/bestNbaTeams.json');
+
+    // // Format the data for insertion
+    // const formattedNbaTeams = bestNbaTeams.map((team: any) => 
+    //   `${team.teamName} (${team.year}): ${team.bestPlayer}, Record: ${team.record}`
+    // ).join('\n');
 
     const systemMessage = `
     <role>
